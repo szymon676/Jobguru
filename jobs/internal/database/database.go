@@ -1,6 +1,11 @@
 package database
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
+
+var DB *sql.DB
 
 func NewDatabase(driverName, dsn string) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
@@ -9,6 +14,21 @@ func NewDatabase(driverName, dsn string) (*sql.DB, error) {
 	}
 
 	if err := db.Ping(); err != nil {
+		return nil, err
+	}
+
+	_, err = db.Exec(`
+        CREATE TABLE IF NOT EXISTS jobs (
+            id SERIAL PRIMARY KEY,
+            title varchar(255),
+            category text,
+			skills text[],
+			description text
+		);
+    `)
+	DB = db
+	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 

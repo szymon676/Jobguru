@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	dsn := ""
+	dsn := "host=localhost port=5432 user=postgres password=1234 dbname=jobguru sslmode=disable"
 	db, err := database.NewDatabase("postgres", dsn)
 
 	if err != nil {
