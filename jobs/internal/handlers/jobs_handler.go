@@ -47,7 +47,7 @@ func (jh JobsHandler) handleCreateUser(w http.ResponseWriter, r *http.Request) e
 		return err
 	}
 
-	err = database.InsertUser(bindJob.Title, bindJob.Category, bindJob.Description, bindJob.Skills)
+	err = database.CreateJob(bindJob.Title, bindJob.Category, bindJob.Description, bindJob.Skills)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,12 @@ func (jh JobsHandler) handleCreateUser(w http.ResponseWriter, r *http.Request) e
 }
 
 func (jh JobsHandler) handleGetUser(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	jobs, err := database.GetJobs()
+	if err != nil {
+		return err
+	}
+
+	return utils.WriteJSON(w, http.StatusOK, jobs)
 }
 
 func (jh JobsHandler) handleUpdateUser() error {
