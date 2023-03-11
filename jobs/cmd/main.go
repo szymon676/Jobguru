@@ -10,12 +10,10 @@ import (
 
 func main() {
 	dsn := flag.String("dsn", "host=localhost user=postgres password=1234 dbname=jobguru port=5432 sslmode=disable", "dsn to connect to the database")
-	db, err := database.NewDatabase("postgres", *dsn)
-
-	if err != nil {
-		fmt.Printf("Error creating database")
+	if _, err := database.NewDatabase("postgres", *dsn); err != nil {
+		fmt.Printf("Error creating database: %v", err)
 	}
 
-	server := handlers.NewJobsHandler(db, ":4000")
+	server := handlers.NewJobsHandler(":1337")
 	server.Run()
 }
