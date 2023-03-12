@@ -7,12 +7,15 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
 	"github.com/szymon676/job-guru/jobs/internal/database"
 	"github.com/szymon676/job-guru/jobs/internal/models"
 	"github.com/szymon676/job-guru/jobs/internal/utils"
 	"github.com/szymon676/job-guru/jobs/internal/validation"
 )
+
+type JobsHandler struct {
+	listenAddr string
+}
 
 func (jh JobsHandler) Run() {
 	router := mux.NewRouter()
@@ -26,11 +29,7 @@ func (jh JobsHandler) Run() {
 	http.ListenAndServe(jh.listenAddr, router)
 }
 
-type JobsHandler struct {
-	listenAddr string
-}
-
-func NewJobsHandler(listenAddr string) *JobsHandler {
+func NewApiServer(listenAddr string) *JobsHandler {
 	return &JobsHandler{
 		listenAddr: listenAddr,
 	}
