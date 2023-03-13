@@ -1,11 +1,15 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/szymon676/job-guru/users/internal/database"
+	"github.com/szymon676/job-guru/users/internal/models"
 	"github.com/szymon676/job-guru/users/internal/utils"
+	"github.com/szymon676/job-guru/users/internal/validation"
 )
 
 type AuthHandler struct {
@@ -28,6 +32,20 @@ func (ah AuthHandler) Run() {
 }
 
 func (AuthHandler) handleRegisterUser(w http.ResponseWriter, r *http.Request) error {
+	var bindRegisterUser models.RegisterUser
+
+	if err := json.NewDecoder(r.Body).Decode(&bindRegisterUser); err != nil {
+		return err
+	}
+
+	if err := validation.VerifyRegister(bindRegisterUser); err != nil {
+		return err
+	}
+
+	if err := database.CreateUser(bindRegisterUser.Name, bindRegisterUser.Password, bindRegisterUser.Email); err != nil {
+		return err
+	}
+
 	return utils.WriteJSON(w, 202, "User registration done successfully")
 }
 
