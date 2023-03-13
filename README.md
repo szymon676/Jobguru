@@ -1,5 +1,21 @@
 # JobGuru
 
-JobGuru is a web application that allows employers to post job openings and job seekers to search for and apply to jobs. The application is built using Go, the Gorilla Mux router, and a PostgreSQL database.
+## JobGuru is a web application that allows employers to post job openings and job seekers to search for and apply to jobs. The application is built using Go, the Gorilla Mux router, and a PostgreSQL database.
 
-Getting Started soon...
+## Overview:
+
+JobGuru - A job board application built with Vue.js and Go, Gorilla Mux, and PostgreSQL.
+JobGuru is a powerful job board platform that enables employers to post job openings and job seekers to browse and apply for positions. The application was built using the Vue.js framework for building the user interface, Go and Gorilla Mux for handling the business logic, and PostgreSQL for storing data.
+
+
+# Features: 
+- Job posting by employers
+- Job browsing and search by job seekers
+- Job application
+- User account management
+
+# How to run the application Backend?:
+1. Clone the repository. 
+2. Open a terminal and navigate to the project directory. 
+3. Navigate to the application server and choose specific service to run. Then run the command \"go run cmd/main.go\" or make run in each service or run binary which is inside cmd/builds folder.
+4. Open a web browser and go to the address that is printend out in console.
