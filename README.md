@@ -19,3 +19,13 @@ JobGuru is a powerful job board platform that enables employers to post job open
 2. Open a terminal and navigate to the project directory. 
 3. Navigate to the application server and choose specific service to run. Then run the command \"go run cmd/main.go\" or make run in each service or run binary which is inside cmd/builds folder.
 4. Open a web browser and go to the address that is printend out in console.
+
+
+
+
+# Running the Frontend app
+1. clone the repository.
+2. Install Node.js and npm on your machine. You can find installation instructions at https://nodejs.org/en/download/.
+3. Navigate to the frontend directory in your terminal.
+4. Run the command npm install to install the project's dependencies.
+5. Run the command npm run dev to start the frontend server
