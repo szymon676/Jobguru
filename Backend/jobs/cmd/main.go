@@ -14,7 +14,7 @@ func main() {
 	flag.Parse()
 
 	if _, err := database.NewDatabase("postgres", *dsn); err != nil {
-		fmt.Printf("Error creating database: %v", err)
+		panic(err)
 	}
 
 	server := handlers.NewApiServer(":1337")
