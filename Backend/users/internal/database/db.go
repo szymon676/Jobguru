@@ -22,8 +22,7 @@ func NewDatabase(driverName, dsn string) (*sql.DB, error) {
             id SERIAL PRIMARY KEY,
             username text,
 			password text,
-			email text,
-			jobs text[]
+			email text
 		);
     `)
 	DB = db
