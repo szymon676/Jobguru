@@ -20,10 +20,10 @@ type JobsHandler struct {
 func (jh JobsHandler) Run() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/jobs", utils.MakeHTTPHandleFunc(jh.handleGetUser)).Methods("GET")
-	router.HandleFunc("/jobs", utils.MakeHTTPHandleFunc(jh.handleCreateUser)).Methods("POST")
-	router.HandleFunc("/jobs/{id}", utils.MakeHTTPHandleFunc(jh.handleUpdateUser)).Methods("PUT")
-	router.HandleFunc("/jobs/{id}", utils.MakeHTTPHandleFunc(jh.handleDeleteUser)).Methods("DELETE")
+	router.HandleFunc("/jobs", utils.MakeHTTPHandleFunc(jh.handleGetJobs)).Methods("GET")
+	router.HandleFunc("/jobs", utils.MakeHTTPHandleFunc(jh.handleCreateJob)).Methods("POST")
+	router.HandleFunc("/jobs/{id}", utils.MakeHTTPHandleFunc(jh.handleUpdateJob)).Methods("PUT")
+	router.HandleFunc("/jobs/{id}", utils.MakeHTTPHandleFunc(jh.handleDeleteJob)).Methods("DELETE")
 
 	log.Println("server running on port:", jh.listenAddr)
 	http.ListenAndServe(jh.listenAddr, router)
@@ -35,7 +35,7 @@ func NewApiServer(listenAddr string) *JobsHandler {
 	}
 }
 
-func (jh JobsHandler) handleCreateUser(w http.ResponseWriter, r *http.Request) error {
+func (jh JobsHandler) handleCreateJob(w http.ResponseWriter, r *http.Request) error {
 	var bindJob models.BindJob
 
 	if err := json.NewDecoder(r.Body).Decode(&bindJob); err != nil {
@@ -55,7 +55,7 @@ func (jh JobsHandler) handleCreateUser(w http.ResponseWriter, r *http.Request) e
 	return utils.WriteJSON(w, http.StatusAccepted, "job created successfully")
 }
 
-func (jh JobsHandler) handleGetUser(w http.ResponseWriter, r *http.Request) error {
+func (jh JobsHandler) handleGetJobs(w http.ResponseWriter, r *http.Request) error {
 	jobs, err := database.GetJobs()
 	if err != nil {
 		return err
@@ -64,7 +64,7 @@ func (jh JobsHandler) handleGetUser(w http.ResponseWriter, r *http.Request) erro
 	return utils.WriteJSON(w, http.StatusOK, jobs)
 }
 
-func (jh JobsHandler) handleUpdateUser(w http.ResponseWriter, r *http.Request) error {
+func (jh JobsHandler) handleUpdateJob(w http.ResponseWriter, r *http.Request) error {
 	var bindJob models.BindJob
 	path := mux.Vars(r)
 	id, _ := strconv.Atoi(path["id"])
@@ -86,7 +86,7 @@ func (jh JobsHandler) handleUpdateUser(w http.ResponseWriter, r *http.Request) e
 	return utils.WriteJSON(w, 200, "job updated successfully")
 }
 
-func (jh JobsHandler) handleDeleteUser(w http.ResponseWriter, r *http.Request) error {
+func (jh JobsHandler) handleDeleteJob(w http.ResponseWriter, r *http.Request) error {
 	path := mux.Vars(r)
 	id := path["id"]
 
