@@ -7,11 +7,11 @@ import (
 	"github.com/szymon676/job-guru/jobs/domain/models"
 )
 
-func CreateJob(title, category, description string, skills []string) error {
-	query := "INSERT INTO jobs (title, category, skills, description) VALUES($1, $2, $3, $4)"
+func CreateJob(title, company string, skills []string, salary, description string) error {
+	query := "INSERT INTO jobs (title, company, skills, salary, description) VALUES($1, $2, $3, $4, $5)"
 	convskills := pq.Array(skills)
 
-	_, err := DB.Query(query, title, category, convskills, description)
+	_, err := DB.Query(query, title, company, convskills, salary, description)
 	if err != nil {
 		return fmt.Errorf("insert into jobs failed: %v", err)
 	}
@@ -33,7 +33,7 @@ func GetJobs() ([]models.Job, error) {
 	for rows.Next() {
 		var job models.Job
 
-		err := rows.Scan(&job.ID, &job.Title, (*pq.StringArray)(&job.Skills), &job.Category, &job.Description)
+		err := rows.Scan(&job.ID, &job.Title, &job.Company, (*pq.StringArray)(&job.Skills), &job.Salary, &job.Description)
 		if err != nil {
 			return nil, err
 		}
@@ -44,7 +44,7 @@ func GetJobs() ([]models.Job, error) {
 	return jobs, nil
 }
 
-func UpdateJob(ID int, title string, skills []string, category, description string) error {
+func UpdateJob(ID int, title, company string, skills []string, salary, description string) error {
 	var count int
 
 	if err := DB.QueryRow("SELECT COUNT(*) FROM jobs WHERE id = $1", ID).Scan(&count); err != nil {
@@ -55,8 +55,8 @@ func UpdateJob(ID int, title string, skills []string, category, description stri
 		return fmt.Errorf("job with id %v does not exist", ID)
 	}
 
-	query := "UPDATE jobs SET title = $1, skills = $2, category = $3, description = $4 WHERE id = $5;"
-	_, err := DB.Exec(query, title, pq.Array(skills), category, description, ID)
+	query := "UPDATE jobs SET title = $1, company = $2, skills = $3, salary = $4, description = $5 WHERE id = $6;"
+	_, err := DB.Exec(query, title, company, pq.Array(skills), salary, description, ID)
 	if err != nil {
 		return err
 	}

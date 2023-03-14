@@ -21,8 +21,9 @@ func NewDatabase(driverName, dsn string) (*sql.DB, error) {
         CREATE TABLE IF NOT EXISTS jobs (
             id SERIAL PRIMARY KEY,
             title varchar(255),
+			company varchar(50),
 			skills text[],
-			category text,
+			salary varchar(20),
 			description text
 		);
     `)

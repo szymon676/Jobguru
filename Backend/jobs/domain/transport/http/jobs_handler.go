@@ -46,7 +46,7 @@ func (jh JobsHandler) handleCreateJob(w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 
-	err = repository.CreateJob(bindJob.Title, bindJob.Category, bindJob.Description, bindJob.Skills)
+	err = repository.CreateJob(bindJob.Title, bindJob.Company, bindJob.Skills, bindJob.Salary, bindJob.Description)
 	if err != nil {
 		return err
 	}
@@ -77,7 +77,7 @@ func (jh JobsHandler) handleUpdateJob(w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 
-	err = repository.UpdateJob(id, bindJob.Title, bindJob.Skills, bindJob.Category, bindJob.Description)
+	err = repository.UpdateJob(id, bindJob.Title, bindJob.Company, bindJob.Skills, bindJob.Salary, bindJob.Description)
 	if err != nil {
 		return err
 	}
