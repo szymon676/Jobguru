@@ -6,6 +6,7 @@ import (
 
 	"github.com/szymon676/job-guru/users/domain/models"
 	"github.com/szymon676/job-guru/users/domain/repository"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func VerifyRegister(v models.RegisterUser) error {
@@ -16,11 +17,12 @@ func VerifyRegister(v models.RegisterUser) error {
 	return nil
 }
 
-func ValidateUser(v models.LoginUser) error {
+func VerifyLogin(v models.LoginUser) error {
 	id, _ := strconv.Atoi(v.ID)
-	acc, _ := repository.GetUserByID(id)
+	account, _ := repository.GetUserByID(id)
 
-	if v.Password != acc.Password {
+	err := bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(v.Password))
+	if err != nil {
 		return fmt.Errorf("wrong password!")
 	}
 

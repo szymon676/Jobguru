@@ -19,7 +19,7 @@ func MakeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
 	}
 }
 
-func WriteJSON(w http.ResponseWriter, status int, v any) error {
+func WriteJSON(w http.ResponseWriter, status int, v ...any) error {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(status)
 
