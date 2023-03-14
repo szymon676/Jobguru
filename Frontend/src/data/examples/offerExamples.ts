@@ -1,11 +1,13 @@
-type OfferExamplesType = Array<{
+export type SingleOfferType = {
   id: number
   title: string
   company: string
   skills: Array<string>
   salary: string
   description: string
-}>
+}
+
+export type OfferExamplesType = Array<SingleOfferType>
 
 export const offerExamples: OfferExamplesType = [
   {
