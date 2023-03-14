@@ -1,19 +1,11 @@
-package database
+package repository
 
 import (
 	"database/sql"
 	"fmt"
 
-	"github.com/szymon676/job-guru/users/internal/models"
+	"github.com/szymon676/job-guru/users/domain/models"
 )
-
-//type User struct {
-//	ID       int      `json:"id"`
-//	Name     string   `json:"name"`
-//	Password string   `json:"password"`
-//	Email    string   `json:"email"`
-//	Jobs     []string `json:"jobs"`
-//}
 
 func CreateUser(name, password, email string) error {
 	query := "INSERT INTO users (username, password, email) VALUES($1, $2, $3)"

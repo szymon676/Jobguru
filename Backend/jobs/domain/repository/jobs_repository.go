@@ -1,10 +1,10 @@
-package database
+package repository
 
 import (
 	"fmt"
 
 	"github.com/lib/pq"
-	"github.com/szymon676/job-guru/jobs/internal/models"
+	"github.com/szymon676/job-guru/jobs/domain/models"
 )
 
 func CreateJob(title, category, description string, skills []string) error {

@@ -1,9 +1,9 @@
-package validation
+package services
 
 import (
 	"fmt"
 
-	"github.com/szymon676/job-guru/jobs/internal/models"
+	"github.com/szymon676/job-guru/jobs/domain/models"
 )
 
 func VerifyJSON(bj models.BindJob) error {

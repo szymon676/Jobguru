@@ -1,4 +1,4 @@
-package handlers
+package http
 
 import (
 	"encoding/json"
@@ -7,10 +7,9 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/szymon676/job-guru/users/internal/database"
-	"github.com/szymon676/job-guru/users/internal/models"
-	"github.com/szymon676/job-guru/users/internal/utils"
-	"github.com/szymon676/job-guru/users/internal/validation"
+	"github.com/szymon676/job-guru/users/domain/models"
+	"github.com/szymon676/job-guru/users/domain/repository"
+	"github.com/szymon676/job-guru/users/domain/services"
 )
 
 type AuthHandler struct {
@@ -26,9 +25,9 @@ func NewApiServer(listenaddr string) *AuthHandler {
 func (ah AuthHandler) Run() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/register", utils.MakeHTTPHandleFunc(ah.handleRegisterUser)).Methods("POST")
-	router.HandleFunc("/login", utils.MakeHTTPHandleFunc(ah.handleLoginUser)).Methods("POST")
-	router.HandleFunc("/users/{id}", utils.MakeHTTPHandleFunc(ah.handleGetUserByID)).Methods("GET")
+	router.HandleFunc("/register", MakeHTTPHandleFunc(ah.handleRegisterUser)).Methods("POST")
+	router.HandleFunc("/login", MakeHTTPHandleFunc(ah.handleLoginUser)).Methods("POST")
+	router.HandleFunc("/users/{id}", MakeHTTPHandleFunc(ah.handleGetUserByID)).Methods("GET")
 
 	fmt.Println("server listening on port:", ah.listenaddr)
 	http.ListenAndServe(ah.listenaddr, router)
@@ -41,15 +40,15 @@ func (AuthHandler) handleRegisterUser(w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 
-	if err := validation.VerifyRegister(bindRegisterUser); err != nil {
+	if err := services.VerifyRegister(bindRegisterUser); err != nil {
 		return err
 	}
 
-	if err := database.CreateUser(bindRegisterUser.Name, bindRegisterUser.Password, bindRegisterUser.Email); err != nil {
+	if err := repository.CreateUser(bindRegisterUser.Name, bindRegisterUser.Password, bindRegisterUser.Email); err != nil {
 		return err
 	}
 
-	return utils.WriteJSON(w, 202, "User registration done successfully")
+	return WriteJSON(w, 202, "User registration done successfully")
 }
 
 func (AuthHandler) handleLoginUser(w http.ResponseWriter, r *http.Request) error {
@@ -59,7 +58,7 @@ func (AuthHandler) handleLoginUser(w http.ResponseWriter, r *http.Request) error
 		return err
 	}
 
-	if err := validation.ValidateUser(loginUser); err != nil {
+	if err := services.ValidateUser(loginUser); err != nil {
 		return err
 	}
 
@@ -70,10 +69,10 @@ func (AuthHandler) handleGetUserByID(w http.ResponseWriter, r *http.Request) err
 	path := mux.Vars(r)
 	id, _ := strconv.Atoi(path["id"])
 
-	user, err := database.GetUserByID(id)
+	user, err := repository.GetUserByID(id)
 	if err != nil {
 		return err
 	}
 
-	return utils.WriteJSON(w, 200, user)
+	return WriteJSON(w, 200, user)
 }

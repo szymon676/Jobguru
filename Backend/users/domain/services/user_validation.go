@@ -1,11 +1,11 @@
-package validation
+package services
 
 import (
 	"fmt"
 	"strconv"
 
-	"github.com/szymon676/job-guru/users/internal/database"
-	"github.com/szymon676/job-guru/users/internal/models"
+	"github.com/szymon676/job-guru/users/domain/models"
+	"github.com/szymon676/job-guru/users/domain/repository"
 )
 
 func VerifyRegister(v models.RegisterUser) error {
@@ -18,7 +18,7 @@ func VerifyRegister(v models.RegisterUser) error {
 
 func ValidateUser(v models.LoginUser) error {
 	id, _ := strconv.Atoi(v.ID)
-	acc, _ := database.GetUserByID(id)
+	acc, _ := repository.GetUserByID(id)
 
 	if v.Password != acc.Password {
 		return fmt.Errorf("wrong password!")

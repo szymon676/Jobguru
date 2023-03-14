@@ -1,4 +1,4 @@
-package handlers
+package http
 
 import (
 	"encoding/json"
@@ -7,10 +7,9 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/szymon676/job-guru/jobs/internal/database"
-	"github.com/szymon676/job-guru/jobs/internal/models"
-	"github.com/szymon676/job-guru/jobs/internal/utils"
-	"github.com/szymon676/job-guru/jobs/internal/validation"
+	"github.com/szymon676/job-guru/jobs/domain/models"
+	"github.com/szymon676/job-guru/jobs/domain/repository"
+	"github.com/szymon676/job-guru/jobs/domain/services"
 )
 
 type JobsHandler struct {
@@ -20,10 +19,10 @@ type JobsHandler struct {
 func (jh JobsHandler) Run() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/jobs", utils.MakeHTTPHandleFunc(jh.handleGetJobs)).Methods("GET")
-	router.HandleFunc("/jobs", utils.MakeHTTPHandleFunc(jh.handleCreateJob)).Methods("POST")
-	router.HandleFunc("/jobs/{id}", utils.MakeHTTPHandleFunc(jh.handleUpdateJob)).Methods("PUT")
-	router.HandleFunc("/jobs/{id}", utils.MakeHTTPHandleFunc(jh.handleDeleteJob)).Methods("DELETE")
+	router.HandleFunc("/jobs", MakeHTTPHandleFunc(jh.handleGetJobs)).Methods("GET")
+	router.HandleFunc("/jobs", MakeHTTPHandleFunc(jh.handleCreateJob)).Methods("POST")
+	router.HandleFunc("/jobs/{id}", MakeHTTPHandleFunc(jh.handleUpdateJob)).Methods("PUT")
+	router.HandleFunc("/jobs/{id}", MakeHTTPHandleFunc(jh.handleDeleteJob)).Methods("DELETE")
 
 	log.Println("server running on port:", jh.listenAddr)
 	http.ListenAndServe(jh.listenAddr, router)
@@ -42,26 +41,26 @@ func (jh JobsHandler) handleCreateJob(w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 
-	err := validation.VerifyJSON(bindJob)
+	err := services.VerifyJSON(bindJob)
 	if err != nil {
 		return err
 	}
 
-	err = database.CreateJob(bindJob.Title, bindJob.Category, bindJob.Description, bindJob.Skills)
+	err = repository.CreateJob(bindJob.Title, bindJob.Category, bindJob.Description, bindJob.Skills)
 	if err != nil {
 		return err
 	}
 
-	return utils.WriteJSON(w, http.StatusAccepted, "job created successfully")
+	return WriteJSON(w, http.StatusAccepted, "job created successfully")
 }
 
 func (jh JobsHandler) handleGetJobs(w http.ResponseWriter, r *http.Request) error {
-	jobs, err := database.GetJobs()
+	jobs, err := repository.GetJobs()
 	if err != nil {
 		return err
 	}
 
-	return utils.WriteJSON(w, http.StatusOK, jobs)
+	return WriteJSON(w, http.StatusOK, jobs)
 }
 
 func (jh JobsHandler) handleUpdateJob(w http.ResponseWriter, r *http.Request) error {
@@ -73,26 +72,26 @@ func (jh JobsHandler) handleUpdateJob(w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 
-	err := validation.VerifyJSON(bindJob)
+	err := services.VerifyJSON(bindJob)
 	if err != nil {
 		return err
 	}
 
-	err = database.UpdateJob(id, bindJob.Title, bindJob.Skills, bindJob.Category, bindJob.Description)
+	err = repository.UpdateJob(id, bindJob.Title, bindJob.Skills, bindJob.Category, bindJob.Description)
 	if err != nil {
 		return err
 	}
 
-	return utils.WriteJSON(w, 200, "job updated successfully")
+	return WriteJSON(w, 200, "job updated successfully")
 }
 
 func (jh JobsHandler) handleDeleteJob(w http.ResponseWriter, r *http.Request) error {
 	path := mux.Vars(r)
 	id := path["id"]
 
-	if err := database.DeleteJob(id); err != nil {
+	if err := repository.DeleteJob(id); err != nil {
 		return err
 	}
 
-	return utils.WriteJSON(w, 204, "job deleted successfully")
+	return WriteJSON(w, 204, "job deleted successfully")
 }

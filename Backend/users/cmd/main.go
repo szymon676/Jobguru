@@ -4,8 +4,8 @@ import (
 	"flag"
 
 	_ "github.com/lib/pq"
-	"github.com/szymon676/job-guru/users/internal/database"
-	"github.com/szymon676/job-guru/users/internal/handlers"
+	database "github.com/szymon676/job-guru/users/domain/repository"
+	api "github.com/szymon676/job-guru/users/domain/transport/http"
 )
 
 func main() {
@@ -16,6 +16,6 @@ func main() {
 		panic(err)
 	}
 
-	server := handlers.NewApiServer(":5000")
+	server := api.NewApiServer(":5000")
 	server.Run()
 }
