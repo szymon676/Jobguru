@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HelloWorld from '../pages/HelloWorld/Hello.vue'
+import HomePage from '@/pages/HomePage.vue'
 import NotFound from '@/pages/Error404Page.vue'
 
 const router = createRouter({
@@ -8,7 +8,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HelloWorld
+      component: HomePage
     },
     {
       path: '/:catchAll(.*)',
