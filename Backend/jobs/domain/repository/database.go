@@ -23,8 +23,9 @@ func NewDatabase(driverName, dsn string) (*sql.DB, error) {
             title varchar(255),
 			company varchar(50),
 			skills text[],
-			salary varchar(20),
-			description text
+			salary integer,
+			description text,
+			currency varchar(5)
 		);
     `)
 	DB = db
