@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/szymon676/job-guru/users/domain/models"
@@ -62,7 +63,23 @@ func (AuthHandler) handleLoginUser(w http.ResponseWriter, r *http.Request) error
 		return err
 	}
 
-	return nil
+	token, err := services.CreateJWT(&loginUser)
+	if err != nil {
+		return err
+	}
+
+	cookie := http.Cookie{
+		Name:     "jwt",
+		Value:    token,
+		Expires:  time.Now().Add(time.Hour * 24),
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+	}
+
+	http.SetCookie(w, &cookie)
+
+	return WriteJSON(w, 200, "user logged in")
 }
 
 func (AuthHandler) handleGetUserByID(w http.ResponseWriter, r *http.Request) error {
