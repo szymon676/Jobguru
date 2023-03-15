@@ -19,8 +19,8 @@ type JobsHandler struct {
 func (jh JobsHandler) Run() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/jobs", MakeHTTPHandleFunc(jh.handleGetJobs)).Methods("GET")
 	router.HandleFunc("/jobs", MakeHTTPHandleFunc(jh.handleCreateJob)).Methods("POST")
+	router.HandleFunc("/jobs", MakeHTTPHandleFunc(jh.handleGetJobs)).Methods("GET")
 	router.HandleFunc("/jobs/{id}", MakeHTTPHandleFunc(jh.handleUpdateJob)).Methods("PUT")
 	router.HandleFunc("/jobs/{id}", MakeHTTPHandleFunc(jh.handleDeleteJob)).Methods("DELETE")
 
@@ -48,7 +48,7 @@ func (jh JobsHandler) handleCreateJob(w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 
-	err = jh.storage.CreateJob(bindJob.Title, bindJob.Company, bindJob.Skills, bindJob.Salary, bindJob.Description, bindJob.Currency)
+	err = jh.storage.CreateJob(bindJob.Title, bindJob.Company, bindJob.Skills, bindJob.Salary, bindJob.Description, bindJob.Currency, bindJob.Date, bindJob.Location)
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func (jh JobsHandler) handleUpdateJob(w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 
-	err = jh.storage.UpdateJob(id, bindJob.Title, bindJob.Company, bindJob.Skills, bindJob.Salary, bindJob.Description, bindJob.Currency)
+	err = jh.storage.UpdateJob(id, bindJob.Title, bindJob.Company, bindJob.Skills, bindJob.Salary, bindJob.Description, bindJob.Currency, bindJob.Date, bindJob.Location)
 	if err != nil {
 		return err
 	}
