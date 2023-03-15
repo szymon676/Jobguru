@@ -11,13 +11,12 @@ Jobguru is a powerful job board platform that enables employers to post job open
 # Features: 
 - Job posting by employers
 - Job browsing and search by job seekers
-- Job application
 - User account management
 
 # How to run the application Backend?:
 1. Clone the repository. 
 2. Open a terminal and navigate to the project directory. 
-3. Navigate to the application server and choose specific service to run. Then run the command \"go run cmd/main.go\" or make run in each service or run binary which is inside cmd/builds folder.
+3. Navigate to the application server and choose specific service to run. Then run the command \"go run main.go\" or make run in each service or run binary which is inside bin folder.
 4. Open a web browser and go to the address that is printend out in console.
 
 In case running with make or Go you firstly need to install Golang from official site https://go.dev/
