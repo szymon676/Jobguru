@@ -1,31 +1,23 @@
 # Jobguru
 
-## Jobguru is a web application that allows employers to post job openings and job seekers to search for and apply to jobs. The application is built using Vue.js, Go, the Gorilla Mux router, and a PostgreSQL database.
+Jobguru is a web application that allows employers to post job openings and job seekers to search for and apply to jobs. The application is built using Vue.js, Go, the Gorilla Mux router, and a PostgreSQL database.
 
-## Overview:
+Overview:
+Jobguru is a job board application built with Vue.js, Go, Gorilla Mux, and PostgreSQL. It is a powerful job board platform that enables employers to post job openings and job seekers to browse and apply for positions. The Vue.js framework is used for building the user interface, Go and Gorilla Mux are used for handling the business logic, and PostgreSQL is used for storing data.
 
-Jobguru - A job board application built with Vue.js and Go, Gorilla Mux, and PostgreSQL.
-Jobguru is a powerful job board platform that enables employers to post job openings and job seekers to browse and apply for positions. The application was built using the Vue.js framework for building the user interface, Go and Gorilla Mux for handling the business logic, and PostgreSQL for storing data.
+# Features:
 
-
-# Features: 
 - Job posting by employers
 - Job browsing and search by job seekers
-- User account management
+- Account managment soon...
 
-# How to run the application Backend?:
-To run database with docker: 
-```
-docker run --name my-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=jobguru-jobs -p 5432:5432 -d postgres
+#How to run the application Backend:
 
-```
-
-1. Clone the repository. 
-2. Open a terminal and navigate to the project directory. 
-3. Navigate to the application server and choose specific service to run. Then run the command \"go run main.go\" or make run in each service or run binary which is inside bin folder.
-4. Open a web browser and go to the address that is printend out in console.
-
-In case running with make or Go you firstly need to install Golang from official site https://go.dev/
+- Clone the repository.
+- Open a terminal and navigate to the project directory.
+- Navigate to the application server and choose a specific service to run. Then run the command "go run main.go" or "make run" in each service, or run the binary which is inside the bin folder.
+- Open a web browser and go to the address that is printed out in the console.
+- If running with make or Go, you first need to install Golang from the official site: https://go.dev/.
 
 # Running the Frontend app
 1. clone the repository.
