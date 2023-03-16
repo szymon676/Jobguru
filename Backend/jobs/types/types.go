@@ -3,7 +3,8 @@ package types
 import "time"
 
 type Job struct {
-	ID          int64     `json:"id"`
+	ID          uint64    `json:"id"`
+	UserID      uint      `json:"user_id"`
 	Title       string    `json:"title"`
 	Company     string    `json:"company"`
 	Skills      []string  `json:"skills"`
@@ -15,6 +16,7 @@ type Job struct {
 }
 
 type BindJob struct {
+	UserID      uint     `json:"user_id"`
 	Title       string   `json:"title"`
 	Company     string   `json:"company"`
 	Skills      []string `json:"skills"`

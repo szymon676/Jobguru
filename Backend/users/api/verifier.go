@@ -1,9 +1,9 @@
 package api
 
 import (
-	"fmt"
 	"strconv"
 
+	"github.com/pkg/errors"
 	"github.com/szymon676/job-guru/users/storage"
 	"github.com/szymon676/job-guru/users/types"
 	"golang.org/x/crypto/bcrypt"
@@ -26,7 +26,7 @@ func NewVerifier(storage storage.Storager) *Verifier {
 
 func (vs Verifier) VerifyRegister(v types.RegisterUser) error {
 	if len(v.Name) <= 3 || len(v.Email) <= 6 || len(v.Password) <= 4 {
-		return fmt.Errorf("error binding registration")
+		return errors.New("eror binding registration!")
 	}
 
 	return nil
@@ -38,7 +38,7 @@ func (vs Verifier) VerifyLogin(v types.LoginUser) error {
 
 	err := bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(v.Password))
 	if err != nil {
-		return fmt.Errorf("wrong password!")
+		return errors.New("wrong password!")
 	}
 
 	return nil

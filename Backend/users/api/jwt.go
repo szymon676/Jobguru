@@ -32,7 +32,7 @@ func (JwtService) CreateJWT(account *types.LoginUser) (string, error) {
 func (JwtService) ParseJWT(r *http.Request) (*jwt.Token, error) {
 	cookie, err := r.Cookie("jwt")
 	if err != nil {
-		return nil, fmt.Errorf("missing JWT cookie")
+		return nil, fmt.Errorf("%c", err)
 	}
 
 	token, err := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
@@ -42,6 +42,7 @@ func (JwtService) ParseJWT(r *http.Request) (*jwt.Token, error) {
 
 		return []byte(secret), nil
 	})
+
 	if err != nil {
 		return nil, fmt.Errorf("invalid JWT: %v", err)
 	}
@@ -56,10 +57,12 @@ func (JwtService) ParseJWT(r *http.Request) (*jwt.Token, error) {
 func CreateCookie(w http.ResponseWriter, token string) error {
 	expiration := time.Now().Add(24 * time.Hour)
 	cookie := http.Cookie{
-		Name:    "jwt",
-		Value:   token,
-		Expires: expiration,
-		Path:    "/",
+		Name:     "jwt",
+		Value:    token,
+		Expires:  expiration,
+		Path:     "/",
+		MaxAge:   604800,
+		SameSite: http.SameSiteNoneMode,
 	}
 
 	http.SetCookie(w, &cookie)

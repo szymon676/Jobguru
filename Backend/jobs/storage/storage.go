@@ -10,13 +10,14 @@ import (
 var DB *sql.DB
 
 type Storager interface {
+	CreateJob(userid uint, title, company string, skills []string, salary int, description, currency, dateStr, location string) error
+	GetJobsByUser(userid uint) ([]types.Job, error)
 	GetJobs() ([]types.Job, error)
-	UpdateJob(ID int, title, company string, skills []string, salary int, description, currency, dateStr, location string) error
+	UpdateJob(ID int, userid uint, title, company string, skills []string, salary int, description, currency, dateStr, location string) error
 	DeleteJob(ID string) error
-	CreateJob(title, company string, skills []string, salary int, description, currency, dateStr, location string) error
 }
 
-func NewDatabase(driverName, dsn string) (*sql.DB, error) {
+func NewPostgresDatabase(driverName, dsn string) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err
@@ -29,6 +30,7 @@ func NewDatabase(driverName, dsn string) (*sql.DB, error) {
 	_, err = db.Exec(`
         CREATE TABLE IF NOT EXISTS jobs (
 			id SERIAL PRIMARY KEY,
+			user_id INTEGER,
 			title TEXT NOT NULL,
 			company TEXT NOT NULL,
 			skills TEXT[] NOT NULL,

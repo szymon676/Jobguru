@@ -13,7 +13,7 @@ import (
 
 func TestHandleCreateJob(t *testing.T) {
 	dsn := "host=localhost user=postgres password=1234 dbname=jobguru-tests port=5432 sslmode=disable"
-	if _, err := storage.NewDatabase("postgres", dsn); err != nil {
+	if _, err := storage.NewPostgresDatabase("postgres", dsn); err != nil {
 		t.Fatalf("error connecting db %c", err)
 	}
 
@@ -58,7 +58,7 @@ func TestHandleCreateJob(t *testing.T) {
 
 func TestHandleGetJobs(t *testing.T) {
 	dsn := "host=localhost user=postgres password=1234 dbname=jobguru-tests port=5432 sslmode=disable"
-	if _, err := storage.NewDatabase("postgres", dsn); err != nil {
+	if _, err := storage.NewPostgresDatabase("postgres", dsn); err != nil {
 		t.Fatalf("error connecting db")
 	}
 

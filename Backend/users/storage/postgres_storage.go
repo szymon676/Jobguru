@@ -22,6 +22,16 @@ func NewDatabase(driverName, dsn string) (*sql.DB, error) {
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}
+
+	_, err = db.Exec(`
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            username text,
+			password text,
+			email text
+		);
+    `)
+
 	DB = db
 
 	return nil, nil
@@ -65,5 +75,6 @@ func scanUser(rows *sql.Rows) (*types.User, error) {
 		&account.Password,
 		&account.Email,
 	)
+
 	return account, err
 }

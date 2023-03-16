@@ -37,8 +37,8 @@ func (ah AuthHandler) Run() {
 
 	router.HandleFunc("/register", MakeHTTPHandleFunc(ah.handleRegisterUser)).Methods("POST")
 	router.HandleFunc("/login", MakeHTTPHandleFunc(ah.handleLoginUser)).Methods("POST")
-	router.HandleFunc("/users/{id}", MakeHTTPHandleFunc(ah.handleGetUserByID)).Methods("GET")
 	router.HandleFunc("/user", MakeHTTPHandleFunc(ah.handleGetUserInfo)).Methods("GET")
+	router.HandleFunc("/users/{id}", MakeHTTPHandleFunc(ah.handleGetUserByID)).Methods("GET")
 
 	fmt.Println("server listening on port:", ah.listenaddr)
 	http.ListenAndServe(ah.listenaddr, router)
@@ -111,16 +111,15 @@ func (ah AuthHandler) handleGetUserInfo(w http.ResponseWriter, r *http.Request) 
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return fmt.Errorf("invalid JWT claims")
+		return fmt.Errorf("invalid JWT claims %v", claims)
 	}
 
 	userID, ok := claims["accountID"].(string)
-	if !ok {
-		return fmt.Errorf("invalid JWT claims")
+	if !ok || userID == "" {
+		return fmt.Errorf("invalid or missing accountID claim")
 	}
 
 	id, _ := strconv.Atoi(userID)
-
 	user, err := ah.storage.GetUserByID(id)
 	if err != nil {
 		return err

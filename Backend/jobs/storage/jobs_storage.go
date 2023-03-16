@@ -19,8 +19,8 @@ func NewPostgreStorage() *PostgresStorage {
 	}
 }
 
-func (ps PostgresStorage) CreateJob(title, company string, skills []string, salary int, description, currency, dateStr, location string) error {
-	query := "INSERT INTO jobs (title, company, skills, salary, description, currency, date, location) VALUES($1, $2, $3, $4, $5, $6, $7, $8)"
+func (ps PostgresStorage) CreateJob(userid uint, title, company string, skills []string, salary int, description, currency, dateStr, location string) error {
+	query := "INSERT INTO jobs (user_id, title, company, skills, salary, description, currency, date, location) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)"
 	convskills := pq.Array(skills)
 
 	date, err := time.Parse("2006-01-02", dateStr)
@@ -28,7 +28,7 @@ func (ps PostgresStorage) CreateJob(title, company string, skills []string, sala
 		return fmt.Errorf("failed to parse date: %v", err)
 	}
 
-	_, err = ps.db.Exec(query, title, company, convskills, salary, description, currency, date, location)
+	_, err = ps.db.Exec(query, userid, title, company, convskills, salary, description, currency, date, location)
 	if err != nil {
 		return fmt.Errorf("insert into jobs failed: %v", err)
 	}
@@ -60,7 +60,31 @@ func (ps PostgresStorage) GetJobs() ([]types.Job, error) {
 	return jobs, nil
 }
 
-func (ps PostgresStorage) UpdateJob(ID int, title, company string, skills []string, salary int, description, currency, dateStr, location string) error {
+func (ps PostgresStorage) GetJobsByUser(userid uint) ([]types.Job, error) {
+	query := "SELECT * FROM jobs WHERE user_id = $1;"
+
+	rows, err := ps.db.Query(query, userid)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var jobs []types.Job
+	for rows.Next() {
+		job, err := scanUser(rows)
+
+		if err != nil {
+			return nil, err
+		}
+
+		jobs = append(jobs, *job)
+	}
+
+	return jobs, nil
+}
+
+func (ps PostgresStorage) UpdateJob(ID int, userid uint, title, company string, skills []string, salary int, description, currency, dateStr, location string) error {
 	var count int
 
 	date, err := time.Parse("2006-01-02", dateStr)
@@ -76,8 +100,8 @@ func (ps PostgresStorage) UpdateJob(ID int, title, company string, skills []stri
 		return fmt.Errorf("job with id %v does not exist", ID)
 	}
 
-	query := "UPDATE jobs SET title = $1, company = $2, skills = $3, salary = $4, description = $5, currency = $6, date = $7, location = $8 WHERE id = $9;"
-	_, err = DB.Exec(query, title, company, pq.Array(skills), salary, description, currency, date, location, ID)
+	query := "UPDATE jobs SET user_id = $1, title = $2, company = $3, skills = $4, salary = $5, description = $6, currency = $7, date = $8, location = $9 WHERE id = $10;"
+	_, err = DB.Exec(query, userid, title, company, pq.Array(skills), salary, description, currency, date, location, ID)
 	if err != nil {
 		return err
 	}
@@ -100,6 +124,7 @@ func scanUser(rows *sql.Rows) (*types.Job, error) {
 	job := new(types.Job)
 	err := rows.Scan(
 		&job.ID,
+		&job.UserID,
 		&job.Title,
 		&job.Company,
 		pq.Array(&job.Skills),
