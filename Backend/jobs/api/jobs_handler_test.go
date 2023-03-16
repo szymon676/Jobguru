@@ -11,12 +11,15 @@ import (
 	"github.com/szymon676/job-guru/jobs/types"
 )
 
-func init() {
-	storage.NewDatabase("postgres", "host=localhost user=postgres password=1234 dbname=jobguru-jobs port=5432 sslmode=disable")
-}
-
 func TestHandleCreateJob(t *testing.T) {
-	jh := NewApiServer("")
+	dsn := "host=localhost user=postgres password=1234 dbname=jobguru-tests port=5432 sslmode=disable"
+	if _, err := storage.NewDatabase("postgres", dsn); err != nil {
+		t.Fatalf("error connecting db %c", err)
+	}
+
+	storage := storage.NewPostgreStorage()
+
+	jh := NewApiServer("", storage)
 	srv := httptest.NewServer(http.HandlerFunc(MakeHTTPHandleFunc(jh.handleCreateJob)))
 	defer srv.Close()
 
@@ -54,7 +57,14 @@ func TestHandleCreateJob(t *testing.T) {
 }
 
 func TestHandleGetJobs(t *testing.T) {
-	jh := NewApiServer("")
+	dsn := "host=localhost user=postgres password=1234 dbname=jobguru-tests port=5432 sslmode=disable"
+	if _, err := storage.NewDatabase("postgres", dsn); err != nil {
+		t.Fatalf("error connecting db")
+	}
+
+	storage := storage.NewPostgreStorage()
+
+	jh := NewApiServer("", storage)
 	srv := httptest.NewServer(http.HandlerFunc(MakeHTTPHandleFunc(jh.handleGetJobs)))
 	defer srv.Close()
 

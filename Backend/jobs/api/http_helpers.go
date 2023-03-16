@@ -3,9 +3,10 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/szymon676/job-guru/jobs/types"
 	"net/http"
 	"time"
+
+	"github.com/szymon676/job-guru/jobs/types"
 )
 
 type apiFunc func(http.ResponseWriter, *http.Request) error

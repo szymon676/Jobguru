@@ -16,6 +16,8 @@ func main() {
 		panic(err)
 	}
 
-	server := api.NewApiServer(":5001")
+	storage := storage.NewPostgreStorage()
+
+	server := api.NewApiServer(":5001", storage)
 	server.Run()
 }

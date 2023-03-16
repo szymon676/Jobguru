@@ -39,7 +39,9 @@ func NewDatabase(driverName, dsn string) (*sql.DB, error) {
 			location TEXT
 		);
     `)
+
 	DB = db
+
 	if err != nil {
 		fmt.Println(err)
 		return nil, err

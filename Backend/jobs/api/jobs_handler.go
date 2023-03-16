@@ -28,11 +28,10 @@ func (jh JobsHandler) Run() {
 	http.ListenAndServe(jh.listenAddr, router)
 }
 
-func NewApiServer(listenAddr string) *JobsHandler {
-	postgrestorage := storage.NewPostgreStorage()
+func NewApiServer(listenAddr string, storage storage.Storager) *JobsHandler {
 	return &JobsHandler{
 		listenAddr: listenAddr,
-		storage:    postgrestorage,
+		storage:    storage,
 	}
 }
 

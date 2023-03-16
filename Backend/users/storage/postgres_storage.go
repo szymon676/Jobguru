@@ -7,11 +7,13 @@ import (
 	"github.com/szymon676/job-guru/users/types"
 )
 
+var DB *sql.DB
+
 type PostgreStorage struct {
 	db *sql.DB
 }
 
-func NewPostgresStorage(driverName, dsn string) (*PostgreStorage, error) {
+func NewDatabase(driverName, dsn string) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err
@@ -20,23 +22,14 @@ func NewPostgresStorage(driverName, dsn string) (*PostgreStorage, error) {
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}
+	DB = db
 
-	_, err = db.Exec(`
-        CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
-            username text,
-			password text,
-			email text
-		);
-    `)
+	return nil, nil
+}
 
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
+func NewPostgresStorage() (*PostgreStorage, error) {
 	return &PostgreStorage{
-		db: db,
+		db: DB,
 	}, nil
 }
 

@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"database/sql"
 	"fmt"
 	"time"
 
@@ -9,21 +10,25 @@ import (
 )
 
 type PostgresStorage struct {
+	db *sql.DB
 }
 
 func NewPostgreStorage() *PostgresStorage {
-	return &PostgresStorage{}
+	return &PostgresStorage{
+		db: DB,
+	}
 }
 
-func (PostgresStorage) CreateJob(title, company string, skills []string, salary int, description, currency, dateStr, location string) error {
+func (ps PostgresStorage) CreateJob(title, company string, skills []string, salary int, description, currency, dateStr, location string) error {
 	query := "INSERT INTO jobs (title, company, skills, salary, description, currency, date, location) VALUES($1, $2, $3, $4, $5, $6, $7, $8)"
 	convskills := pq.Array(skills)
+
 	date, err := time.Parse("2006-01-02", dateStr)
 	if err != nil {
 		return fmt.Errorf("failed to parse date: %v", err)
 	}
 
-	_, err = DB.Exec(query, title, company, convskills, salary, description, currency, date, location)
+	_, err = ps.db.Exec(query, title, company, convskills, salary, description, currency, date, location)
 	if err != nil {
 		return fmt.Errorf("insert into jobs failed: %v", err)
 	}
@@ -31,10 +36,10 @@ func (PostgresStorage) CreateJob(title, company string, skills []string, salary 
 	return nil
 }
 
-func (PostgresStorage) GetJobs() ([]types.Job, error) {
+func (ps PostgresStorage) GetJobs() ([]types.Job, error) {
 	query := "SELECT * FROM jobs;"
 
-	rows, err := DB.Query(query)
+	rows, err := ps.db.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -43,20 +48,19 @@ func (PostgresStorage) GetJobs() ([]types.Job, error) {
 
 	var jobs []types.Job
 	for rows.Next() {
-		var job types.Job
+		job, err := scanUser(rows)
 
-		err := rows.Scan(&job.ID, &job.Title, &job.Company, (*pq.StringArray)(&job.Skills), &job.Salary, &job.Description, &job.Currency, &job.Date, &job.Location)
 		if err != nil {
 			return nil, err
 		}
 
-		jobs = append(jobs, job)
+		jobs = append(jobs, *job)
 	}
 
 	return jobs, nil
 }
 
-func (PostgresStorage) UpdateJob(ID int, title, company string, skills []string, salary int, description, currency, dateStr, location string) error {
+func (ps PostgresStorage) UpdateJob(ID int, title, company string, skills []string, salary int, description, currency, dateStr, location string) error {
 	var count int
 
 	date, err := time.Parse("2006-01-02", dateStr)
@@ -64,7 +68,7 @@ func (PostgresStorage) UpdateJob(ID int, title, company string, skills []string,
 		return fmt.Errorf("failed to parse date: %v", err)
 	}
 
-	if err := DB.QueryRow("SELECT COUNT(*) FROM jobs WHERE id = $1", ID).Scan(&count); err != nil {
+	if err := ps.db.QueryRow("SELECT COUNT(*) FROM jobs WHERE id = $1", ID).Scan(&count); err != nil {
 		return err
 	}
 
@@ -81,13 +85,30 @@ func (PostgresStorage) UpdateJob(ID int, title, company string, skills []string,
 	return nil
 }
 
-func (PostgresStorage) DeleteJob(ID string) error {
+func (ps PostgresStorage) DeleteJob(ID string) error {
 	query := "DELETE FROM jobs WHERE id = $1"
 
-	_, err := DB.Exec(query, ID)
+	_, err := ps.db.Exec(query, ID)
 
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func scanUser(rows *sql.Rows) (*types.Job, error) {
+	job := new(types.Job)
+	err := rows.Scan(
+		&job.ID,
+		&job.Title,
+		&job.Company,
+		pq.Array(&job.Skills),
+		&job.Salary,
+		&job.Description,
+		&job.Currency,
+		&job.Date,
+		&job.Location,
+	)
+
+	return job, err
 }

@@ -20,7 +20,7 @@ type AuthHandler struct {
 	verifier   VerifyService
 }
 
-func NewApiServer(listenaddr string, storage storage.PostgreStorage) *AuthHandler {
+func NewApiServer(listenaddr string, storage storage.Storager) *AuthHandler {
 	jwtservice := NewJwtService()
 	verifier := NewVerifier(storage)
 

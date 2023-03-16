@@ -18,7 +18,7 @@ type Verifier struct {
 	storage storage.Storager
 }
 
-func NewVerifier(storage storage.PostgreStorage) *Verifier {
+func NewVerifier(storage storage.Storager) *Verifier {
 	return &Verifier{
 		storage: storage,
 	}
