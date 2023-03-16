@@ -7,4 +7,5 @@ import (
 type Storager interface {
 	CreateUser(name, password, email string) error
 	GetUserByID(id int) (*types.User, error)
+	GetUserByEmail(email string) (*types.User, error)
 }

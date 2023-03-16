@@ -6,3 +6,6 @@ run: build
 
 test: 
 	@go test -v ./...
+
+itest:
+	@py integration/main.py

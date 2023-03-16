@@ -101,7 +101,7 @@ func (ps PostgresStorage) UpdateJob(ID int, userid uint, title, company string, 
 	}
 
 	query := "UPDATE jobs SET user_id = $1, title = $2, company = $3, skills = $4, salary = $5, description = $6, currency = $7, date = $8, location = $9 WHERE id = $10;"
-	_, err = DB.Exec(query, userid, title, company, pq.Array(skills), salary, description, currency, date, location, ID)
+	_, err = ps.db.Exec(query, userid, title, company, pq.Array(skills), salary, description, currency, date, location, ID)
 	if err != nil {
 		return err
 	}

@@ -26,7 +26,7 @@ func TestLogin(t *testing.T) {
 	handler := http.HandlerFunc(MakeHTTPHandleFunc(as.handleLoginUser))
 
 	loginBody := types.LoginUser{
-		ID:       "1",
+		Email:    "12345@gmail.com",
 		Password: "12345",
 	}
 

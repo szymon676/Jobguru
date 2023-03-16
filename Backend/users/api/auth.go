@@ -102,7 +102,6 @@ func (ah AuthHandler) handleGetUserByID(w http.ResponseWriter, r *http.Request) 
 
 	return WriteJSON(w, 200, user)
 }
-
 func (ah AuthHandler) handleGetUserInfo(w http.ResponseWriter, r *http.Request) error {
 	token, err := ah.jwtservice.ParseJWT(r)
 	if err != nil {
@@ -114,12 +113,12 @@ func (ah AuthHandler) handleGetUserInfo(w http.ResponseWriter, r *http.Request) 
 		return fmt.Errorf("invalid JWT claims %v", claims)
 	}
 
-	userID, ok := claims["accountID"].(string)
-	if !ok || userID == "" {
-		return fmt.Errorf("invalid or missing accountID claim")
+	userID, ok := claims["accountID"].(float64)
+	if !ok {
+		return fmt.Errorf("missing or invalid accountID claim")
 	}
 
-	id, _ := strconv.Atoi(userID)
+	id := int(userID)
 	user, err := ah.storage.GetUserByID(id)
 	if err != nil {
 		return err

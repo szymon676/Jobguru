@@ -1,8 +1,6 @@
 package api
 
 import (
-	"strconv"
-
 	"github.com/pkg/errors"
 	"github.com/szymon676/job-guru/users/storage"
 	"github.com/szymon676/job-guru/users/types"
@@ -33,8 +31,7 @@ func (vs Verifier) VerifyRegister(v types.RegisterUser) error {
 }
 
 func (vs Verifier) VerifyLogin(v types.LoginUser) error {
-	id, _ := strconv.Atoi(v.ID)
-	account, _ := vs.storage.GetUserByID(id)
+	account, _ := vs.storage.GetUserByEmail(v.Email)
 
 	err := bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(v.Password))
 	if err != nil {
