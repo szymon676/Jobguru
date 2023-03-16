@@ -14,6 +14,12 @@ Jobguru is a powerful job board platform that enables employers to post job open
 - User account management
 
 # How to run the application Backend?:
+To run database with docker: 
+```
+docker run --name my-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=jobguru-jobs -p 5432:5432 -d postgres
+
+```
+
 1. Clone the repository. 
 2. Open a terminal and navigate to the project directory. 
 3. Navigate to the application server and choose specific service to run. Then run the command \"go run main.go\" or make run in each service or run binary which is inside bin folder.
