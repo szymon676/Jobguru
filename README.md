@@ -11,7 +11,7 @@ Jobguru is a job board application built with Vue.js, Go, Gorilla Mux, and Postg
 - Job browsing and search by job seekers
 - Account managment soon...
 
-#How to run the application Backend:
+# How to run the application Backend:
 
 - Clone the repository.
 - Open a terminal and navigate to the project directory.
