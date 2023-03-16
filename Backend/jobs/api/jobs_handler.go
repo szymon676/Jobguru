@@ -23,8 +23,7 @@ func (jh JobsHandler) Run() {
 
 	router.HandleFunc("/jobs", MakeHTTPHandleFunc(jh.handleCreateJob)).Methods("POST")
 	router.HandleFunc("/jobs", MakeHTTPHandleFunc(jh.handleGetJobs)).Methods("GET")
-	router.HandleFunc("/jobs/{id}", MakeHTTPHandleFunc(jh.handleGetJobsByUser)).Methods("GET")
-	router.HandleFunc("/user", MakeHTTPHandleFunc(jh.handleGetUserInfo)).Methods("GET")
+	router.HandleFunc("/jobs/{userid}", MakeHTTPHandleFunc(jh.handleGetJobsByUser)).Methods("GET")
 	router.HandleFunc("/jobs/{id}", MakeHTTPHandleFunc(jh.handleUpdateJob)).Methods("PUT")
 	router.HandleFunc("/jobs/{id}", MakeHTTPHandleFunc(jh.handleDeleteJob)).Methods("DELETE")
 
@@ -41,7 +40,6 @@ func NewApiServer(listenAddr string, storage storage.Storager) *JobsHandler {
 
 func (jh JobsHandler) handleCreateJob(w http.ResponseWriter, r *http.Request) error {
 	var bindJob types.BindJob
-	cookie, _ := r.Cookie("jwt")
 
 	if err := json.NewDecoder(r.Body).Decode(&bindJob); err != nil {
 		return err
@@ -57,7 +55,7 @@ func (jh JobsHandler) handleCreateJob(w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 
-	return WriteJSON(w, http.StatusAccepted, "job created successfully", cookie.Value)
+	return WriteJSON(w, http.StatusAccepted, "job created successfully")
 }
 
 func (jh JobsHandler) handleGetJobs(w http.ResponseWriter, r *http.Request) error {
@@ -69,25 +67,11 @@ func (jh JobsHandler) handleGetJobs(w http.ResponseWriter, r *http.Request) erro
 	return WriteJSON(w, http.StatusOK, jobs)
 }
 
-func (jh JobsHandler) handleGetUserInfo(w http.ResponseWriter, r *http.Request) error {
-	var smth interface{}
-
-	resp, err := http.Get("http://localhost:5000/user")
-	if err != nil {
-		return err
-	}
-
-	if err := json.NewDecoder(resp.Body).Decode(&smth); err != nil {
-		return err
-	}
-	return WriteJSON(w, 200, smth)
-}
-
 func (jh JobsHandler) handleGetJobsByUser(w http.ResponseWriter, r *http.Request) error {
 	path := mux.Vars(r)
-	id, _ := strconv.Atoi(path["id"])
+	userid, _ := strconv.Atoi(path["userid"])
 
-	jobs, err := jh.storage.GetJobsByUser(uint(id))
+	jobs, err := jh.storage.GetJobsByUser(uint(userid))
 	if err != nil {
 		return err
 	}

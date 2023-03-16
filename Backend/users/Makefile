@@ -3,3 +3,6 @@ build:
 
 run: build
 	@bin/main
+
+test: 
+	@go test -v ./...

@@ -9,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/gorilla/mux"
 	"github.com/szymon676/job-guru/users/storage"
-	types "github.com/szymon676/job-guru/users/types"
+	"github.com/szymon676/job-guru/users/types"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -88,7 +88,7 @@ func (ah AuthHandler) handleLoginUser(w http.ResponseWriter, r *http.Request) er
 		return err
 	}
 
-	return WriteJSON(w, http.StatusOK, "user logged in successfully")
+	return WriteJSON(w, http.StatusAccepted, "user logged in successfully")
 }
 
 func (ah AuthHandler) handleGetUserByID(w http.ResponseWriter, r *http.Request) error {

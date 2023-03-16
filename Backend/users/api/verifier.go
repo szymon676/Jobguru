@@ -25,7 +25,7 @@ func NewVerifier(storage storage.Storager) *Verifier {
 }
 
 func (vs Verifier) VerifyRegister(v types.RegisterUser) error {
-	if len(v.Name) <= 3 || len(v.Email) <= 6 || len(v.Password) <= 4 {
+	if len(v.Name) < 3 || len(v.Email) < 6 || len(v.Password) < 4 {
 		return errors.New("eror binding registration!")
 	}
 

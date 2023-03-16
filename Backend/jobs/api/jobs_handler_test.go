@@ -13,8 +13,11 @@ import (
 
 func TestHandleCreateJob(t *testing.T) {
 	dsn := "host=localhost user=postgres password=1234 dbname=jobguru-tests port=5432 sslmode=disable"
-	if _, err := storage.NewPostgresDatabase("postgres", dsn); err != nil {
-		t.Fatalf("error connecting db %c", err)
+
+	_, err := storage.NewPostgresDatabase("postgres", dsn)
+
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	storage := storage.NewPostgreStorage()
@@ -24,6 +27,7 @@ func TestHandleCreateJob(t *testing.T) {
 	defer srv.Close()
 
 	job := types.BindJob{
+		UserID:      1,
 		Title:       "Software Engineer",
 		Company:     "Acme Inc",
 		Skills:      []string{"Go", "Java", "Python"},

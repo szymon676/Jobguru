@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	_ "github.com/lib/pq"
 	"github.com/szymon676/job-guru/users/types"
 )
 
@@ -13,7 +14,7 @@ type PostgreStorage struct {
 	db *sql.DB
 }
 
-func NewDatabase(driverName, dsn string) (*sql.DB, error) {
+func NewPostgresDatabase(driverName, dsn string) (*sql.DB, error) {
 	db, err := sql.Open(driverName, dsn)
 	if err != nil {
 		return nil, err
@@ -37,10 +38,10 @@ func NewDatabase(driverName, dsn string) (*sql.DB, error) {
 	return nil, nil
 }
 
-func NewPostgresStorage() (*PostgreStorage, error) {
+func NewPostgresStorage() *PostgreStorage {
 	return &PostgreStorage{
 		db: DB,
-	}, nil
+	}
 }
 
 func (ps PostgreStorage) CreateUser(name, password, email string) error {
