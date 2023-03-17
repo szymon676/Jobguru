@@ -51,7 +51,7 @@ body {
   background-color: transparent;
   border: #0fff50 1px solid;
   border-radius: 20px;
-  height: 20px;
+  height: 50px;
   width: 300px;
   padding: 10px;
   font-size: 17px;
