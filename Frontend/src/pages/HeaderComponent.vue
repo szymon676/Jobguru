@@ -73,7 +73,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 60px;
   width: 50px;
   margin-right: 20px;
   outline: none;
