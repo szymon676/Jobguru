@@ -2,11 +2,11 @@
   <div class="header">
     <div class="left">
       <h2>JOBGURU</h2>
-      <img src="../assets/home.svg" alt="" />
+      <img src="../assets/home.svg" alt="home icon" />
     </div>
     <form>
       <input type="text" placeholder="e.g. Junior java developer" />
-      <button><img src="../assets/magnifier.svg" alt="" /></button>
+      <button><img src="../assets/magnifier.svg" alt="Magnifier icon" /></button>
     </form>
   </div>
 </template>
@@ -29,7 +29,7 @@
 }
 
 .header h2 {
-  color: #0fff50;
+  color: #fff;
   text-align: left;
   padding: 10px;
 }
@@ -50,11 +50,11 @@
   height: 10px;
   margin: 10px;
   border-radius: 15px;
-  border: 1px solid #0fff50;
+  border: 1px solid #1f1f1f;
   padding: 10px;
   width: 100%;
   font-size: 16px;
-  background-color: transparent;
+  background-color: #1f1f1f;
   outline: none;
   color: #fff;
 }

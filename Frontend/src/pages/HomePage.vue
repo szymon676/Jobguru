@@ -12,8 +12,12 @@ import headerComponent from '@/pages/HeaderComponent.vue'
       <button class="accesBtn">Acces</button>
       <p class="pAcces">Or acces with:</p>
       <div class="login-methods">
-        <button class="githubBtn">Github</button>
-        <button class="googleBtn">Google</button>
+        <button class="githubBtn">
+          <img src="../assets/github.svg" alt="github logo" /> Github
+        </button>
+        <button class="googleBtn">
+          <img src="../assets/google.svg" alt="Google logo" /> Google
+        </button>
       </div>
       <h3>First time here?</h3>
       <p>Our platform uses email based no pasword login to speed up the login process!</p>
@@ -23,8 +27,8 @@ import headerComponent from '@/pages/HeaderComponent.vue'
 
 <style>
 body {
-  background-color: #121213;
-  color: #0fff50;
+  background-color: #121212;
+  color: #fff;
   font-family: 'Golos Text', sans-serif;
 }
 
@@ -35,6 +39,7 @@ body {
   align-items: flex-start;
   flex-direction: column;
   margin-top: 40px;
+  padding: 10px;
 }
 
 .acces-wrapper {
@@ -48,10 +53,11 @@ body {
 }
 
 .acces input {
-  background-color: transparent;
-  border: #0fff50 1px solid;
+  background-color: #1f1f1f;
+  border: #1f1f1f 1px solid;
   border-radius: 20px;
-  height: 50px;
+  color: #a0a0a0;
+  height: 20px;
   width: 300px;
   padding: 10px;
   font-size: 17px;
@@ -62,11 +68,21 @@ body {
 .googleBtn {
   padding: 10px 20px;
   border-radius: 20px;
-  background-color: transparent;
-  border: #0fff50 1px solid;
-  color: #0fff50;
+  background-color: #1f1f1f;
+  border: #1f1f1f 1px solid;
+  color: #a0a0a0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   margin-top: 20px;
   font-size: 15px;
+}
+
+.googleBtn img,
+.githubBtn img {
+  height: 25px;
+  margin-right: 5px;
 }
 
 .acces p {
@@ -85,5 +101,6 @@ body {
 
 .login-methods {
   margin-bottom: 10px;
+  display: flex;
 }
 </style>
