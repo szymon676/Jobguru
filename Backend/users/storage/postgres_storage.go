@@ -27,9 +27,9 @@ func NewPostgresDatabase(driverName, dsn string) (*sql.DB, error) {
 	db.Exec(`
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
-            username text,
+            username text UNIQUE,
 			password text,
-			email text
+			email text UNIQUE
 		);
     `)
 
@@ -80,7 +80,6 @@ func (ps PostgreStorage) GetUserByEmail(email string) (*types.User, error) {
 
 	return nil, fmt.Errorf("user %s not found", email)
 }
-
 
 func scanUser(rows *sql.Rows) (*types.User, error) {
 	account := new(types.User)
