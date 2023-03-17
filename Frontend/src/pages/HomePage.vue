@@ -70,7 +70,7 @@ body {
   border-radius: 20px;
   background-color: #1f1f1f;
   border: #1f1f1f 1px solid;
-  color: #a0a0a0;
+  color: #b6b6b6;
   display: flex;
   flex-direction: row;
   justify-content: center;
