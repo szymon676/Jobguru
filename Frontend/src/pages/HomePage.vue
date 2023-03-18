@@ -1,5 +1,12 @@
-<script setup lang="ts">
-import headerComponent from '@/pages/HeaderComponent.vue'
+<script lang="ts">
+import HeaderComponent from '@/components/HeaderComponent.vue'
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  components: {
+    headerComponent: HeaderComponent
+  }
+})
 </script>
 
 <template>
@@ -30,6 +37,7 @@ body {
   background-color: #121212;
   color: #fff;
   font-family: 'Golos Text', sans-serif;
+  overflow: hidden;
 }
 
 .acces {
