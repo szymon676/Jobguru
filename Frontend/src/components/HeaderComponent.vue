@@ -3,6 +3,7 @@
     <div class="left">
       <h2>JOBGURU</h2>
       <img src="../assets/home.svg" alt="home icon" />
+      <img src="../assets/job.svg" alt="bell icon" />
     </div>
     <form>
       <input type="text" placeholder="e.g. Junior java developer" />
@@ -44,6 +45,7 @@
 .header .left img {
   margin-left: 10px;
   cursor: pointer;
+  height: 25px;
 }
 
 .header input {
@@ -73,7 +75,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 60px;
   width: 50px;
   margin-right: 20px;
   outline: none;
