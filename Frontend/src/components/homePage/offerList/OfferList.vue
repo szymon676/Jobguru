@@ -8,4 +8,8 @@ import SingleOffer from './SingleOffer.vue'
     <SingleOffer v-for="offer in offerExamples" v-bind="offer" :key="offer.id" />
   </div>
 </template>
-<style lang="scss"></style>
+<style lang="scss">
+.list {
+  color: black;
+}
+</style>

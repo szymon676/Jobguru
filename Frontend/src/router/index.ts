@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/pages/HomePage.vue'
 import NotFound from '@/pages/Error404Page.vue'
+import ListOfferPage from '@/pages/ListOfferPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,6 +15,11 @@ const router = createRouter({
       path: '/:catchAll(.*)',
       name: 'NotFound',
       component: NotFound
+    },
+    {
+      path: '/listOffer',
+      name: 'listOffer',
+      component: ListOfferPage
     }
   ]
 })
