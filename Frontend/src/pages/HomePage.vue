@@ -37,7 +37,7 @@ body {
   background-color: #121212;
   color: #fff;
   font-family: 'Golos Text', sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .acces {
