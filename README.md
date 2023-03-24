@@ -1,9 +1,9 @@
 # Jobguru
 
-Jobguru is a web application that allows employers to post job openings and job seekers to search for and apply to jobs. The application is built using Vue.js, Go, the Gorilla Mux router, and a PostgreSQL database.
+Jobguru is a web application that allows employers to post job openings and job seekers to search for and apply to jobs.
 
 Overview:
-Jobguru is a job board application built with Vue.js, Go, Gorilla Mux, and PostgreSQL. It is a powerful job board platform that enables employers to post job openings and job seekers to browse and apply for positions. The Vue.js framework is used for building the user interface, Go and Gorilla Mux are used for handling the business logic, and PostgreSQL is used for storing data.
+Jobguru is a powerful job board platform that enables employers to post job openings and job seekers to browse and apply for positions. The Vue.js framework is used for building the user interface, Go and Gorilla Mux are used for handling the business logic, and PostgreSQL is used for storing data.
 
 # Features:
 
