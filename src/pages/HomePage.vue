@@ -5,18 +5,31 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   components: {
     headerComponent: HeaderComponent
+  },
+  methods: {
+    handleDarkModeToggle() {
+      const googleBtn = document.querySelector('.googleBtn')
+      const ghBtn = document.querySelector('.githubBtn')
+      const accesBtn = document.querySelector('.accesBtn')
+      const emailInput = document.querySelector('.email')
+
+      googleBtn?.classList.toggle('DarkToggle')
+      ghBtn?.classList.toggle('DarkToggle')
+      accesBtn?.classList.toggle('DarkToggle')
+      emailInput?.classList.toggle('DarkToggle')
+    }
   }
 })
 </script>
 
 <template>
   <div>
-    <headerComponent />
+    <headerComponent @darkModeToggle="handleDarkModeToggle" />
     <div class="acces-wrapper">
       <div class="acces">
         <h2>Acces</h2>
         <p>Welcome to Jobguru!</p>
-        <input type="email" placeholder="email" />
+        <input type="email" placeholder="email" class="email" />
         <button class="accesBtn">Acces</button>
         <p class="pAcces">Or acces with:</p>
         <div class="login-methods">
@@ -113,5 +126,10 @@ body {
 .login-methods {
   margin-bottom: 10px;
   display: flex;
+}
+
+.DarkToggle {
+  background-color: #fff !important;
+  color: #121213 !important;
 }
 </style>

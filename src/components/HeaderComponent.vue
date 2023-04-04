@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'HeaderComponent',
@@ -43,10 +43,10 @@ export default defineComponent({
         input?.classList.toggle('DarkToggle')
         homeIcon?.classList.toggle('DarkToggle')
         bellIcon?.classList.toggle('DarkToggle')
-
         magnifierIcon?.classList.toggle('DarkToggle')
-
         jobGuru?.classList.toggle('DarkToggle')
+
+        this.$emit('dark-mode-toggle')
       })
     }
   }
