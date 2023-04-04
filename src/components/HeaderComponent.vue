@@ -11,7 +11,7 @@
         <img src="../assets/icon-moon-light.svg" alt="a moon icon" class="darkModeImg" />
       </button>
       <input type="text" placeholder="e.g. Junior java developer" />
-      <button><img src="../assets/magnifier.svg" alt="Magnifier icon" /></button>
+      <button><img src="../assets/magnifier.svg" alt="Magnifier icon" class="magnifier" /></button>
     </form>
   </div>
 </template>
@@ -33,6 +33,7 @@ export default defineComponent({
       const bellIcon = document.querySelector('.left img:nth-child(2)')
       const magnifierIcon = document.querySelector('button:nth-child(3) img')
       const jobGuru = document.querySelector('.header h2')
+      const magnifier = document.querySelector('.magnifier')
 
       darkModeBtn?.addEventListener('click', () => {
         darkModeBtn.classList.toggle('DarkToggle')
@@ -42,7 +43,9 @@ export default defineComponent({
         input?.classList.toggle('DarkToggle')
         homeIcon?.classList.toggle('DarkToggle')
         bellIcon?.classList.toggle('DarkToggle')
+
         magnifierIcon?.classList.toggle('DarkToggle')
+
         jobGuru?.classList.toggle('DarkToggle')
       })
     }
@@ -61,7 +64,7 @@ export default defineComponent({
   padding-left: 10px;
   padding-right: 10px;
   border-bottom: #3a3a3c 1px solid;
-  max-height: 50px;
+  max-height: 65px;
 }
 
 .header h2 {
@@ -84,7 +87,7 @@ export default defineComponent({
 }
 
 .header input {
-  height: 10px;
+  height: 7px;
   margin: 10px;
   border-radius: 15px;
   border: 1px solid #1f1f1f;
@@ -117,22 +120,12 @@ export default defineComponent({
   cursor: pointer;
 }
 
-.darkModeBtn {
-  background-color: #1f1f1f;
-  border: none;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-  width: 50px;
-  margin-right: 20px;
-  outline: none;
-  cursor: pointer;
-}
-
 .DarkToggle {
   background-color: #fff !important;
   color: #121213 !important;
+}
+
+.header input .DarkToggle {
+  border: 1px solid #121213 !important;
 }
 </style>
