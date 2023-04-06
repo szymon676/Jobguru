@@ -5,29 +5,44 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   components: {
     headerComponent: HeaderComponent
+  },
+  methods: {
+    handleDarkModeToggle() {
+      const googleBtn = document.querySelector('.googleBtn')
+      const ghBtn = document.querySelector('.githubBtn')
+      const accesBtn = document.querySelector('.accesBtn')
+      const emailInput = document.querySelector('.email')
+
+      googleBtn?.classList.toggle('DarkToggle')
+      ghBtn?.classList.toggle('DarkToggle')
+      accesBtn?.classList.toggle('DarkToggle')
+      emailInput?.classList.toggle('DarkToggle')
+    }
   }
 })
 </script>
 
 <template>
-  <headerComponent />
-  <div class="acces-wrapper">
-    <div class="acces">
-      <h2>Acces</h2>
-      <p>Welcome to Jobguru!</p>
-      <input type="email" placeholder="email" />
-      <button class="accesBtn">Acces</button>
-      <p class="pAcces">Or acces with:</p>
-      <div class="login-methods">
-        <button class="githubBtn">
-          <img src="../assets/github.svg" alt="github logo" /> Github
-        </button>
-        <button class="googleBtn">
-          <img src="../assets/google.svg" alt="Google logo" /> Google
-        </button>
+  <div>
+    <headerComponent @darkModeToggle="handleDarkModeToggle" />
+    <div class="acces-wrapper">
+      <div class="acces">
+        <h2>Acces</h2>
+        <p>Welcome to Jobguru!</p>
+        <input type="email" placeholder="email" class="email" />
+        <button class="accesBtn">Acces</button>
+        <p class="pAcces">Or acces with:</p>
+        <div class="login-methods">
+          <button class="githubBtn">
+            <img src="../assets/github.svg" alt="github logo" /> Github
+          </button>
+          <button class="googleBtn">
+            <img src="../assets/google.svg" alt="Google logo" /> Google
+          </button>
+        </div>
+        <h3>First time here?</h3>
+        <p>Our platform uses email based no pasword login to speed up the login process!</p>
       </div>
-      <h3>First time here?</h3>
-      <p>Our platform uses email based no pasword login to speed up the login process!</p>
     </div>
   </div>
 </template>
@@ -85,6 +100,7 @@ body {
   align-items: center;
   margin-top: 20px;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .googleBtn img,
@@ -110,5 +126,10 @@ body {
 .login-methods {
   margin-bottom: 10px;
   display: flex;
+}
+
+.DarkToggle {
+  background-color: #fff !important;
+  color: #121213 !important;
 }
 </style>
