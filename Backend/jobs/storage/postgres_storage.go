@@ -48,7 +48,7 @@ func (ps PostgresStorage) GetJobs() ([]types.Job, error) {
 
 	var jobs []types.Job
 	for rows.Next() {
-		job, err := scanUser(rows)
+		job, err := scanJob(rows)
 
 		if err != nil {
 			return nil, err
@@ -72,7 +72,7 @@ func (ps PostgresStorage) GetJobsByUser(userid uint) ([]types.Job, error) {
 
 	var jobs []types.Job
 	for rows.Next() {
-		job, err := scanUser(rows)
+		job, err := scanJob(rows)
 
 		if err != nil {
 			return nil, err
@@ -120,7 +120,7 @@ func (ps PostgresStorage) DeleteJob(ID string) error {
 	return nil
 }
 
-func scanUser(rows *sql.Rows) (*types.Job, error) {
+func scanJob(rows *sql.Rows) (*types.Job, error) {
 	job := new(types.Job)
 	err := rows.Scan(
 		&job.ID,
