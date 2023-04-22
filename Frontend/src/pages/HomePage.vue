@@ -1,3 +1,28 @@
+<template>
+  <div>
+    <headerComponent @darkModeToggle="handleDarkModeToggle" />
+    <div class="acces-wrapper">
+      <div class="acces">
+        <h2>Acces</h2>
+        <p>Welcome to Jobguru!</p>
+        <div class="input-group" :class="{ show: showNameInput }">
+          <input type="email" placeholder="email" class="email" v-model="email" />
+        </div>
+        <div class="input-group" :class="{ show: showNameInput }">
+          <input type="text" placeholder="Name" class="name" v-model="name" />
+        </div>
+        <div class="input-group" :class="{ show: showPasswordInput }">
+          <input type="password" placeholder="Password" class="password" v-model="password" />
+          <button class="accesBtn" @click="login()">Acces</button>
+        </div>
+
+        <h3>First time here?</h3>
+        <p>Our platform uses email based no pasword login to speed up the login process!</p>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script lang="ts">
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import { defineComponent } from 'vue'
@@ -5,6 +30,15 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   components: {
     headerComponent: HeaderComponent
+  },
+  data() {
+    return {
+      email: '',
+      name: '',
+      password: '',
+      showNameInput: false,
+      showPasswordInput: false
+    }
   },
   methods: {
     handleDarkModeToggle() {
@@ -17,27 +51,13 @@ export default defineComponent({
       ghBtn?.classList.toggle('DarkToggle')
       accesBtn?.classList.toggle('DarkToggle')
       emailInput?.classList.toggle('DarkToggle')
+    },
+    login() {
+      console.log(`Email: ${this.email}\nName: ${this.name}\nPassword: ${this.password}`)
     }
   }
 })
 </script>
-
-<template>
-  <div>
-    <headerComponent @darkModeToggle="handleDarkModeToggle" />
-    <div class="acces-wrapper">
-      <div class="acces">
-        <h2>Acces</h2>
-        <p>Welcome to Jobguru!</p>
-        <input type="email" placeholder="email" class="email" />
-        <button class="accesBtn">Acces</button>
-
-        <h3>First time here?</h3>
-        <p>Our platform uses email based no pasword login to speed up the login process!</p>
-      </div>
-    </div>
-  </div>
-</template>
 
 <style>
 body {
@@ -123,5 +143,10 @@ body {
 .DarkToggle {
   background-color: #fff !important;
   color: #121213 !important;
+}
+
+.name,
+.password {
+  margin-top: 10px;
 }
 </style>
