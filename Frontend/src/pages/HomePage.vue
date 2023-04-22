@@ -9,20 +9,25 @@
           <input type="email" placeholder="email" class="email" v-model="email" />
         </div>
         <div class="input-group" :class="{ show: showNameInput }">
-          <input type="text" placeholder="Name" class="name" v-model="name" />
+          <input type="text" placeholder="Name" class="name" v-model="name" v-if="email" />
         </div>
         <div class="input-group" :class="{ show: showPasswordInput }">
-          <input type="password" placeholder="Password" class="password" v-model="password" />
+          <input
+            type="password"
+            placeholder="Password"
+            class="password"
+            v-model="password"
+            v-if="name"
+          />
           <button class="accesBtn" @click="login()">Acces</button>
+          <p class="error-message">{{ errorMessage }}</p>
         </div>
-
         <h3>First time here?</h3>
         <p>Our platform uses email based no pasword login to speed up the login process!</p>
       </div>
     </div>
   </div>
 </template>
-
 <script lang="ts">
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import { defineComponent } from 'vue'
@@ -36,8 +41,7 @@ export default defineComponent({
       email: '',
       name: '',
       password: '',
-      showNameInput: false,
-      showPasswordInput: false
+      errorMessage: ''
     }
   },
   methods: {
@@ -53,12 +57,25 @@ export default defineComponent({
       emailInput?.classList.toggle('DarkToggle')
     },
     login() {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
+        this.errorMessage = 'Invalid email'
+        return
+      }
+
+      if (this.password.length < 5) {
+        this.errorMessage = 'Password must be at least 5 characters long'
+        return
+      }
+
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email) || this.password.length < 5) {
+        this.errorMessage = ''
+      }
+
       console.log(`Email: ${this.email}\nName: ${this.name}\nPassword: ${this.password}`)
     }
   }
 })
 </script>
-
 <style>
 body {
   background-color: #121212;
@@ -147,6 +164,11 @@ body {
 
 .name,
 .password {
+  margin-top: 10px;
+}
+
+.error-message {
+  color: #ff0000;
   margin-top: 10px;
 }
 </style>
