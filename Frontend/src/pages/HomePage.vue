@@ -6,10 +6,23 @@
         <h2>Acces</h2>
         <p>Welcome to Jobguru!</p>
         <div class="input-group" :class="{ show: showNameInput }">
-          <input type="email" placeholder="email" class="email" v-model="email" />
+          <input
+            type="email"
+            placeholder="email"
+            class="email"
+            v-model="email"
+            :class="{ DarkToggle: isDarkMode }"
+          />
         </div>
         <div class="input-group" :class="{ show: showNameInput }">
-          <input type="text" placeholder="Name" class="name" v-model="name" v-if="email" />
+          <input
+            type="text"
+            placeholder="Name"
+            class="name"
+            v-model="name"
+            v-if="email"
+            :class="{ DarkToggle: isDarkMode }"
+          />
         </div>
         <div class="input-group" :class="{ show: showPasswordInput }">
           <input
@@ -18,9 +31,12 @@
             class="password"
             v-model="password"
             v-if="name"
+            :class="{ DarkToggle: isDarkMode }"
           />
-          <button class="accesBtn" @click="login()">Acces</button>
-          <p class="error-message">{{ errorMessage }}</p>
+          <button class="accesBtn" @click="login()" :class="{ DarkToggle: isDarkMode }">
+            Acces
+          </button>
+          <p class="error-message" :class="{ DarkToggle: isDarkMode }">{{ errorMessage }}</p>
         </div>
         <h3>First time here?</h3>
         <p>Our platform uses email based no pasword login to speed up the login process!</p>
@@ -41,7 +57,8 @@ export default defineComponent({
       email: '',
       name: '',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      isDarkMode: false
     }
   },
   methods: {
@@ -55,6 +72,8 @@ export default defineComponent({
       ghBtn?.classList.toggle('DarkToggle')
       accesBtn?.classList.toggle('DarkToggle')
       emailInput?.classList.toggle('DarkToggle')
+
+      this.isDarkMode = !this.isDarkMode
     },
     login() {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
