@@ -8,7 +8,13 @@
 
     <form>
       <div id="dark-mode-switch">
-        <input type="checkbox" id="switch" name="switch" @click.prevent="darkModeToggle" />
+        <input
+          type="checkbox"
+          id="switch"
+          class="darkMode-checkbox"
+          name="switch"
+          @click.prevent="darkModeToggle"
+        />
         <label for="switch"></label>
       </div>
       <input type="text" placeholder="e.g. Junior java developer" class="input" />
@@ -24,7 +30,7 @@ export default defineComponent({
 
   methods: {
     darkModeToggle() {
-      const darkModeBtn = document.querySelector('.darkModeBtn')
+      const darkModeBtn = document.querySelector('.darkMode-checkbox')
       const body = document.querySelector('body')
       const header = document.querySelector('.header')
       const input = document.querySelector('.input')
@@ -124,7 +130,7 @@ export default defineComponent({
   margin-right: 10px;
   height: 23px;
   border-radius: 15px;
-  background-color: rgb(43, 42, 42);
+  background-color: rgb(49, 49, 49);
   position: relative;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
@@ -155,5 +161,12 @@ export default defineComponent({
 
 .header input .DarkToggle {
   border: 1px solid #121213 !important;
+}
+
+label .DarkToggle {
+  -webkit-box-shadow: inset 3px 9px 20px -6px rgba(66, 68, 90, 1) !important;
+  -moz-box-shadow: inset 3px 9px 20px -6px rgba(66, 68, 90, 1) !important;
+  box-shadow: inset 3px 9px 20px -6px rgba(66, 68, 90, 1) !important;
+  background-color: #fff !important;
 }
 </style>
