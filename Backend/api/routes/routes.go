@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -23,6 +24,7 @@ func SetupRoutes(listenaddr string, ah *handlers.AuthHandler, jh *handlers.JobsH
 	j.HandleFunc("/jobs/{id}", makeHTTPHandleFunc(jh.HandleUpdateJob)).Methods("PUT")
 	j.HandleFunc("/jobs/{id}", makeHTTPHandleFunc(jh.HandleDeleteJob)).Methods("DELETE")
 
+	log.Println("server listening on port", listenaddr)
 	err := http.ListenAndServe(listenaddr, router)
 	if err != nil {
 		return err
