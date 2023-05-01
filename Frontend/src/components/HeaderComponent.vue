@@ -15,7 +15,7 @@
           name="switch"
           @click.prevent="darkModeToggle"
         />
-        <label for="switch"></label>
+        <label for="switch" class="label"></label>
       </div>
       <input type="text" placeholder="e.g. Junior java developer" class="input" />
       <button><img src="../assets/magnifier.svg" alt="Magnifier icon" class="magnifier" /></button>
@@ -121,52 +121,47 @@ export default defineComponent({
   cursor: pointer;
 }
 
-#dark-mode-switch input[type='checkbox'] {
-  display: none;
-}
-#dark-mode-switch label {
-  display: block;
-  width: 50px;
-  margin-right: 10px;
-  height: 23px;
-  border-radius: 15px;
-  background-color: rgb(49, 49, 49);
-  position: relative;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-#dark-mode-switch label:after {
-  content: '';
-  display: block;
-  position: absolute;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  background-color: white;
-  top: 3px;
-  left: 2.5px;
-  transition: transform 0.2s ease-in-out;
-}
-#dark-mode-switch input[type='checkbox']:checked + label {
-  background-color: #2196f3;
-}
-#dark-mode-switch input[type='checkbox']:checked + label:after {
-  transform: translateX(25px);
-}
-
 .DarkToggle {
   background-color: #fff !important;
   color: #121213 !important;
 }
 
-.header input .DarkToggle {
-  border: 1px solid #121213 !important;
+.label {
+  width: 60px;
+  height: 24px;
+  position: relative;
+  display: block;
+  background: #242424;
+  border-radius: 30px;
+  box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-label .DarkToggle {
-  -webkit-box-shadow: inset 3px 9px 20px -6px rgba(66, 68, 90, 1) !important;
-  -moz-box-shadow: inset 3px 9px 20px -6px rgba(66, 68, 90, 1) !important;
-  box-shadow: inset 3px 9px 20px -6px rgba(66, 68, 90, 1) !important;
-  background-color: #fff !important;
+.label:after {
+  content: '';
+  width: 18px;
+  height: 17px;
+  position: absolute;
+  top: 3px;
+  left: 7px;
+  background: linear-gradient(190deg, #777, #818181);
+  border-radius: 50%;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+#switch {
+  display: none;
+}
+
+#switch:checked + .label {
+  background: #ebebeb;
+}
+
+input:checked + label:after {
+  left: 30px;
+  transform: translateX(-100%);
+  background: linear-gradient(180deg, #777, #3a3a3a);
 }
 </style>
