@@ -11,7 +11,7 @@ import (
 	"github.com/szymon676/jobguru/storage"
 	"github.com/szymon676/jobguru/types"
 
-	"github.com/szymon676/jobguru/api/utils"
+	"github.com/szymon676/jobguru/api/validators"
 )
 
 type JobsHandler struct {
@@ -25,18 +25,18 @@ func NewJobHandler(storage storage.JobStorager) *JobsHandler {
 }
 
 func (jh JobsHandler) HandleCreateJob(w http.ResponseWriter, r *http.Request) error {
-	var bindJob types.BindJob
+	var jobReq types.JobReq
 
-	if err := json.NewDecoder(r.Body).Decode(&bindJob); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&jobReq); err != nil {
 		return err
 	}
 
-	err := utils.VerifyJSON(bindJob)
+	err := validators.VerifyJobReq(jobReq)
 	if err != nil {
 		return err
 	}
 
-	err = jh.storage.CreateJob(uint(bindJob.UserID), bindJob.Title, bindJob.Company, bindJob.Skills, bindJob.Salary, bindJob.Description, bindJob.Currency, bindJob.Date, bindJob.Location)
+	err = jh.storage.CreateJob(uint(jobReq.UserID), jobReq.Title, jobReq.Company, jobReq.Skills, jobReq.Salary, jobReq.Description, jobReq.Currency, jobReq.Date, jobReq.Location)
 	if err != nil {
 		return err
 	}
@@ -66,20 +66,20 @@ func (jh JobsHandler) HandleGetJobsByUser(w http.ResponseWriter, r *http.Request
 }
 
 func (jh JobsHandler) HandleUpdateJob(w http.ResponseWriter, r *http.Request) error {
-	var bindJob types.BindJob
+	var jobReq types.JobReq
 	path := mux.Vars(r)
 	id, _ := strconv.Atoi(path["id"])
 
-	if err := json.NewDecoder(r.Body).Decode(&bindJob); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&jobReq); err != nil {
 		return err
 	}
 
-	err := utils.VerifyJSON(bindJob)
+	err := validators.VerifyJobReq(jobReq)
 	if err != nil {
 		return err
 	}
 
-	err = jh.storage.UpdateJob(id, bindJob.UserID, bindJob.Title, bindJob.Company, bindJob.Skills, bindJob.Salary, bindJob.Description, bindJob.Currency, bindJob.Date, bindJob.Location)
+	err = jh.storage.UpdateJob(id, jobReq.UserID, jobReq.Title, jobReq.Company, jobReq.Skills, jobReq.Salary, jobReq.Description, jobReq.Currency, jobReq.Date, jobReq.Location)
 	if err != nil {
 		return err
 	}
@@ -98,28 +98,7 @@ func (jh JobsHandler) HandleDeleteJob(w http.ResponseWriter, r *http.Request) er
 	return WriteJSON(w, 204, "job deleted successfully")
 }
 
-type apiFunc func(http.ResponseWriter, *http.Request) error
-
-type ApiError struct {
-	Error string `json:"error"`
-}
-
-func MakeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if err := f(w, r); err != nil {
-			WriteJSON(w, http.StatusBadRequest, ApiError{Error: err.Error()})
-		}
-	}
-}
-
-func WriteJSON(w http.ResponseWriter, status int, v ...any) error {
-	w.Header().Add("Content-Type", "application/json")
-	w.WriteHeader(status)
-
-	return json.NewEncoder(w).Encode(v)
-}
-
-func ParseDate(bj *types.BindJob) (time.Time, error) {
+func ParseDate(bj *types.JobReq) (time.Time, error) {
 	dateStr := bj.Date
 	dateLayout := "2006-01-02"
 

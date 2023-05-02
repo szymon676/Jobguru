@@ -15,7 +15,7 @@ type Job struct {
 	Location    string    `json:"location"`
 }
 
-type BindJob struct {
+type JobReq struct {
 	UserID      uint     `json:"user_id"`
 	Title       string   `json:"title"`
 	Company     string   `json:"company"`

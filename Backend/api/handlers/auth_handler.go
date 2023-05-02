@@ -11,24 +11,19 @@ import (
 	"github.com/szymon676/jobguru/storage"
 	"github.com/szymon676/jobguru/types"
 
-	"github.com/szymon676/jobguru/api/utils"
+	"github.com/szymon676/jobguru/api/validators"
+
+	"github.com/szymon676/jobguru/api/auth"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthHandler struct {
-	jwtservice utils.JwtService
-	storage    storage.UserStorager
-	verifier   utils.VerifyService
+	storage storage.UserStorager
 }
 
 func NewAuthHandler(storage storage.UserStorager) *AuthHandler {
-	jwtservice := utils.NewJwtService(storage)
-	verifier := utils.NewVerifier(storage)
-
 	return &AuthHandler{
-		jwtservice: *jwtservice,
-		storage:    storage,
-		verifier:   verifier,
+		storage: storage,
 	}
 }
 
@@ -39,7 +34,7 @@ func (ah *AuthHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Request
 		return err
 	}
 
-	if err := ah.verifier.VerifyRegister(bindRegisterUser); err != nil {
+	if err := validators.VerifyRegister(bindRegisterUser); err != nil {
 		return err
 	}
 
@@ -62,17 +57,17 @@ func (ah *AuthHandler) HandleLoginUser(w http.ResponseWriter, r *http.Request) e
 		return err
 	}
 
-	if err := ah.verifier.VerifyLogin(loginUser); err != nil {
+	if err := validators.VerifyLogin(loginUser, ah.storage); err != nil {
 		w.Header().Set("WWW-Authenticate", `Bearer realm="Restricted"`)
 		return WriteJSON(w, http.StatusUnauthorized, map[string]string{"error": err.Error()})
 	}
 
-	token, err := ah.jwtservice.CreateJWT(&loginUser)
+	token, err := auth.CreateJWT(&loginUser, ah.storage)
 	if err != nil {
 		return err
 	}
 
-	if err := utils.CreateCookie(w, token); err != nil {
+	if err := auth.CreateCookie(w, token); err != nil {
 		return err
 	}
 
@@ -91,7 +86,7 @@ func (ah *AuthHandler) HandleGetUserByID(w http.ResponseWriter, r *http.Request)
 	return WriteJSON(w, 200, user)
 }
 func (ah *AuthHandler) HandleGetUserInfo(w http.ResponseWriter, r *http.Request) error {
-	token, err := ah.jwtservice.ParseJWT(r)
+	token, err := auth.ParseJWT(r)
 	if err != nil {
 		return err
 	}
