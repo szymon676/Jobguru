@@ -3,7 +3,7 @@ package storage
 import "database/sql"
 
 func NewPostgreStorage(dsn string) (*sql.DB, error) {
-	db, err := sql.Open("postgre", dsn)
+	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		return nil, err
 	}

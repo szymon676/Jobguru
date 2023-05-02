@@ -18,10 +18,10 @@ func NewPostgreUserStorage(db *sql.DB) *PostgreUserStorage {
 	}
 }
 
-func (us PostgreUserStorage) CreateUser(name, password, email string) error {
+func (us PostgreUserStorage) CreateUser(req types.RegisterUser) error {
 	query := "INSERT INTO users (username, password, email) VALUES($1, $2, $3)"
 
-	_, err := us.db.Exec(query, name, password, email)
+	_, err := us.db.Exec(query, req.Name, req.Password, req.Email)
 	if err != nil {
 		return err
 	}

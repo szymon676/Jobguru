@@ -5,9 +5,9 @@ import (
 )
 
 type JobStorager interface {
-	CreateJob(userid uint, title, company string, skills []string, salary int, description, currency, dateStr, location string) error
-	GetJobsByUser(userid uint) ([]types.Job, error)
+	CreateJob(types.JobReq) error
 	GetJobs() ([]types.Job, error)
-	UpdateJob(ID int, userid uint, title, company string, skills []string, salary int, description, currency, dateStr, location string) error
-	DeleteJob(ID string) error
+	GetJobsByUserID(userid int) ([]types.Job, error)
+	UpdateJobByID(int, types.JobReq) error
+	DeleteJobByID(int) error
 }

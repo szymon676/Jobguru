@@ -5,7 +5,7 @@ import (
 )
 
 type UserStorager interface {
-	CreateUser(name, password, email string) error
+	CreateUser(types.RegisterUser) error
 	GetUserByID(id int) (*types.User, error)
 	GetUserByEmail(email string) (*types.User, error)
 }
