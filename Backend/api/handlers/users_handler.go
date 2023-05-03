@@ -6,10 +6,9 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	jwt "github.com/szymon676/jobguru/api/jwt"
 	"github.com/szymon676/jobguru/service"
 	"github.com/szymon676/jobguru/types"
-
-	"github.com/szymon676/jobguru/api/auth"
 )
 
 type UsersHandler struct {
@@ -45,7 +44,7 @@ func (uh *UsersHandler) HandleLoginUser(w http.ResponseWriter, r *http.Request) 
 		return err
 	}
 
-	if err := auth.CreateCookie(w, token); err != nil {
+	if err := jwt.CreateCookie(w, token); err != nil {
 		return err
 	}
 

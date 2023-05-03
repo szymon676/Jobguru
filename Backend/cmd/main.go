@@ -3,9 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/szymon676/jobguru/api/handlers"
 	"github.com/szymon676/jobguru/service"
 	"github.com/szymon676/jobguru/storage"
@@ -13,15 +11,7 @@ import (
 	"github.com/szymon676/jobguru/api/routes"
 )
 
-func init() {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-}
-
-var dsn = fmt.Sprintf("host=jobguru-db user=%s password=%s dbname=%s port=5432 sslmode=disable", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
+var dsn = fmt.Sprintf("host=localhost user=%s password=%s dbname=%s port=5432 sslmode=disable", "postgres", "1234", "jobguru")
 
 func main() {
 	store, err := storage.NewPostgreStorage(dsn)

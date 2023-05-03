@@ -6,14 +6,13 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/szymon676/jobguru/api/handlers"
-	"github.com/szymon676/jobguru/api/middlewares"
 )
 
 func SetupRoutes(listenaddr string, uh *handlers.UsersHandler, jh *handlers.JobsHandler) error {
 	router := mux.NewRouter()
 
-	u := router.PathPrefix("/users").Subrouter()
-	u.HandleFunc("/register", middlewares.Log(makeHTTPHandleFunc(uh.HandleRegisterUser))).Methods("POST")
+	u := router.PathPrefix("/auth").Subrouter()
+	u.HandleFunc("/register", makeHTTPHandleFunc(uh.HandleRegisterUser)).Methods("POST")
 	u.HandleFunc("/login", makeHTTPHandleFunc(uh.HandleLoginUser)).Methods("POST")
 	u.HandleFunc("/users/{id}", makeHTTPHandleFunc(uh.HandleGetUserByID)).Methods("GET")
 

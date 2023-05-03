@@ -67,7 +67,7 @@ func (js *JobService) UpdateJobByID(userID int, req types.JobReq) error {
 }
 
 func (js *JobService) DeleteJobByID(jobID int) error {
-	err := js.DeleteJobByID(jobID)
+	err := js.storage.DeleteJobByID(jobID)
 	if err != nil {
 		return err
 	}
