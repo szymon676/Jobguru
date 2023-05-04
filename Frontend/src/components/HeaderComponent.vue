@@ -124,9 +124,10 @@ export default defineComponent({
 .DarkToggle {
   background-color: #fff !important;
   color: #121213 !important;
+  transition: 0.3s;
 }
 
-.label {
+label {
   width: 60px;
   height: 24px;
   position: relative;
@@ -138,7 +139,7 @@ export default defineComponent({
   transition: 0.3s;
 }
 
-.label:after {
+label:after {
   content: url('../assets/icon-moon-light.svg');
   width: 18px;
   height: 17px;
@@ -154,17 +155,18 @@ export default defineComponent({
   transition: 0.3s;
 }
 
-#switch {
+input[type='checkbox'] {
   display: none;
 }
 
-#switch:checked + .label {
+input[type='checkbox'].DarkToggle + label {
   background: #ebebeb;
 }
 
-input:checked + label:after {
-  left: 30px;
+input[type='checkbox'].DarkToggle + label:after {
+  left: 50px;
   transform: translateX(-100%);
-  background: linear-gradient(180deg, #777, #3a3a3a);
+  background: #525252;
+  content: url('../assets/icon-sun.svg');
 }
 </style>
