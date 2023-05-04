@@ -15,7 +15,7 @@ Jobguru is a powerful job board platform that enables employers to post job open
 
 - Clone the repository.
 - Open a terminal and navigate to the project directory.
-- Navigate to the application server and choose a specific service to run. Then run the command "go run main.go" or "make run" in each service, or run the binary which is inside the bin folder.
+- Then run the command "go run main.go" or "make run".
 - Open a web browser and go to the address that is printed out in the console.
 - If running with make or Go, you first need to install Golang from the official site: https://go.dev/.
 
