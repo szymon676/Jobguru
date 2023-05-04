@@ -131,21 +131,24 @@ export default defineComponent({
   height: 24px;
   position: relative;
   display: block;
-  background: #242424;
+  background: #525252;
   border-radius: 30px;
-  box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.3);
   cursor: pointer;
   transition: 0.3s;
 }
 
 .label:after {
-  content: '';
+  content: url('../assets/icon-moon-light.svg');
   width: 18px;
   height: 17px;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   top: 3px;
   left: 7px;
-  background: linear-gradient(190deg, #777, #818181);
+  background: #ffffff;
   border-radius: 50%;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
   transition: 0.3s;
