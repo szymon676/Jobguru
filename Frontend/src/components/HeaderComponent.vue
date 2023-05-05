@@ -7,15 +7,21 @@
     </div>
 
     <form>
-      <button class="darkModeBtn" @click.prevent="darkModeToggle">
-        <img src="../assets/icon-moon-light.svg" alt="a moon icon" class="darkModeImg" />
-      </button>
-      <input type="text" placeholder="e.g. Junior java developer" />
+      <div id="dark-mode-switch">
+        <input
+          type="checkbox"
+          id="switch"
+          class="darkMode-checkbox"
+          name="switch"
+          @click.prevent="darkModeToggle"
+        />
+        <label for="switch" class="label"></label>
+      </div>
+      <input type="text" placeholder="e.g. Junior java developer" class="input" />
       <button><img src="../assets/magnifier.svg" alt="Magnifier icon" class="magnifier" /></button>
     </form>
   </div>
 </template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 
@@ -24,30 +30,26 @@ export default defineComponent({
 
   methods: {
     darkModeToggle() {
-      const darkModeBtn = document.querySelector('.darkModeBtn')
-      const darkModeImg = document.querySelector('.darkModeImg')
+      const darkModeBtn = document.querySelector('.darkMode-checkbox')
       const body = document.querySelector('body')
       const header = document.querySelector('.header')
-      const input = document.querySelector('input')
+      const input = document.querySelector('.input')
       const homeIcon = document.querySelector('.left img')
       const bellIcon = document.querySelector('.left img:nth-child(2)')
       const magnifierIcon = document.querySelector('button:nth-child(3) img')
       const jobGuru = document.querySelector('.header h2')
       const magnifier = document.querySelector('.magnifier')
 
-      darkModeBtn?.addEventListener('click', () => {
-        darkModeBtn.classList.toggle('DarkToggle')
-        darkModeImg?.classList.toggle('DarkToggle')
-        body?.classList.toggle('DarkToggle')
-        header?.classList.toggle('DarkToggle')
-        input?.classList.toggle('DarkToggle')
-        homeIcon?.classList.toggle('DarkToggle')
-        bellIcon?.classList.toggle('DarkToggle')
-        magnifierIcon?.classList.toggle('DarkToggle')
-        jobGuru?.classList.toggle('DarkToggle')
+      darkModeBtn?.classList.toggle('DarkToggle')
+      body?.classList.toggle('DarkToggle')
+      header?.classList.toggle('DarkToggle')
+      input?.classList.toggle('DarkToggle')
+      homeIcon?.classList.toggle('DarkToggle')
+      bellIcon?.classList.toggle('DarkToggle')
+      magnifierIcon?.classList.toggle('DarkToggle')
+      jobGuru?.classList.toggle('DarkToggle')
 
-        this.$emit('dark-mode-toggle')
-      })
+      this.$emit('dark-mode-toggle')
     }
   }
 })
@@ -109,7 +111,6 @@ export default defineComponent({
 .header button {
   background-color: transparent;
   border: none;
-  border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -123,9 +124,49 @@ export default defineComponent({
 .DarkToggle {
   background-color: #fff !important;
   color: #121213 !important;
+  transition: 0.3s;
 }
 
-.header input .DarkToggle {
-  border: 1px solid #121213 !important;
+label {
+  width: 60px;
+  height: 24px;
+  position: relative;
+  display: block;
+  background: #525252;
+  border-radius: 30px;
+  box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+label:after {
+  content: url('../assets/icon-moon-light.svg');
+  width: 18px;
+  height: 17px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 3px;
+  left: 7px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+input[type='checkbox'].DarkToggle + label {
+  background: #ebebeb;
+}
+
+input[type='checkbox'].DarkToggle + label:after {
+  left: 50px;
+  transform: translateX(-100%);
+  background: #525252;
+  content: url('../assets/icon-sun.svg');
 }
 </style>
