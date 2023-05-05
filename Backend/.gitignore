@@ -1,0 +1,7 @@
+*.exe
+*.exe~
+
+.env
+
+/data
+/pg_hba.conf

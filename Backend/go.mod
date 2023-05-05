@@ -11,6 +11,7 @@ require (
 require (
 	github.com/fatih/color v1.15.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/joho/godotenv v1.5.1
 	github.com/pkg/errors v0.9.1
 )
 
