@@ -4,9 +4,9 @@ import (
 	"log"
 
 	jwt "github.com/szymon676/jobguru/api/jwt"
+	"github.com/szymon676/jobguru/api/validators"
 	"github.com/szymon676/jobguru/storage"
 	"github.com/szymon676/jobguru/types"
-	"github.com/szymon676/jobguru/validators"
 
 	"golang.org/x/crypto/bcrypt"
 )

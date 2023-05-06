@@ -7,7 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	jwt "github.com/szymon676/jobguru/api/jwt"
-	"github.com/szymon676/jobguru/service"
+	"github.com/szymon676/jobguru/api/service"
 	"github.com/szymon676/jobguru/types"
 )
 

@@ -1,9 +1,9 @@
 package service
 
 import (
+	"github.com/szymon676/jobguru/api/validators"
 	"github.com/szymon676/jobguru/storage"
 	"github.com/szymon676/jobguru/types"
-	"github.com/szymon676/jobguru/validators"
 )
 
 type IJobService interface {

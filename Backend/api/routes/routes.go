@@ -10,6 +10,7 @@ import (
 
 func SetupRoutes(listenaddr string, uh *handlers.UsersHandler, jh *handlers.JobsHandler) error {
 	router := mux.NewRouter()
+	router.Use(corsMiddleware)
 
 	u := router.PathPrefix("/auth").Subrouter()
 	u.HandleFunc("/register", makeHTTPHandleFunc(uh.HandleRegisterUser)).Methods("POST")

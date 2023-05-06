@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/szymon676/jobguru/types"
 
-	"github.com/szymon676/jobguru/service"
+	"github.com/szymon676/jobguru/api/service"
 )
 
 type JobsHandler struct {

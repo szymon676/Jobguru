@@ -6,7 +6,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/szymon676/jobguru/api/handlers"
-	"github.com/szymon676/jobguru/service"
+	"github.com/szymon676/jobguru/api/service"
 	"github.com/szymon676/jobguru/storage"
 
 	"github.com/szymon676/jobguru/api/routes"
