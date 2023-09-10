@@ -8,5 +8,9 @@ import (
 
 func main() {
 	port := os.Getenv("PORT")
-	app.SetupApp(port)
+	if port == "" {
+		port = ":3000"
+	}
+	dsn := os.Getenv("DSN")
+	app.SetupApp(port, dsn)
 }

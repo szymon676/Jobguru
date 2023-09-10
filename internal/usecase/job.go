@@ -44,20 +44,20 @@ func (js *JobUsecase) GetJobsByUser(userid int) ([]entity.Job, error) {
 	return jobs, nil
 }
 
-func (js *JobUsecase) UpdateJobByID(id int, req *entity.JobReq) error {
+func (js *JobUsecase) UpdateJob(id int, req *entity.JobReq) error {
 	job, err := entity.VerifyJobReq(req)
 	if err != nil {
 		return err
 	}
-	err = js.repo.UpdateJobByID(id, job)
+	err = js.repo.UpdateJob(id, job)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (js *JobUsecase) DeleteJobByID(jobID int) error {
-	err := js.repo.DeleteJobByID(jobID)
+func (js *JobUsecase) DeleteJob(jobID int) error {
+	err := js.repo.DeleteJob(jobID)
 	if err != nil {
 		return err
 	}

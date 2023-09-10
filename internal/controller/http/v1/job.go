@@ -63,7 +63,7 @@ func (jh *jobRoutes) updateJob(c *fiber.Ctx) error {
 
 	c.BodyParser(&req)
 
-	err := jh.j.UpdateJobByID(id, req)
+	err := jh.j.UpdateJob(id, req)
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func (jh *jobRoutes) deleteJob(c *fiber.Ctx) error {
 	userid := c.Params("id")
 	id, _ := strconv.Atoi(userid)
 
-	if err := jh.j.DeleteJobByID(id); err != nil {
+	if err := jh.j.DeleteJob(id); err != nil {
 		return err
 	}
 

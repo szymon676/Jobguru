@@ -7,7 +7,10 @@ require (
 	golang.org/x/crypto v0.8.0
 )
 
-require github.com/gofiber/fiber/v2 v2.49.1
+require (
+	github.com/gofiber/fiber/v2 v2.49.1
+	github.com/szymon676/betterdocker v0.0.0-20230804062646-4ef07ba00afd
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect

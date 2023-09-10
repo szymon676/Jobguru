@@ -62,7 +62,7 @@ func (jr *JobRepo) GetJobsByUserID(userID int) ([]entity.Job, error) {
 	return jr.getJobsByQuery(query, userID)
 }
 
-func (jr *JobRepo) UpdateJobByID(ID int, job *entity.Job) error {
+func (jr *JobRepo) UpdateJob(ID int, job *entity.Job) error {
 	count := 0
 
 	if err := jr.db.QueryRow("SELECT COUNT(*) FROM jobs WHERE id = $1", ID).Scan(&count); err != nil {
@@ -87,7 +87,7 @@ func (jr *JobRepo) UpdateJobByID(ID int, job *entity.Job) error {
 	return nil
 }
 
-func (jr *JobRepo) DeleteJobByID(ID int) error {
+func (jr *JobRepo) DeleteJob(ID int) error {
 	query := "DELETE FROM jobs WHERE id = $1"
 	_, err := jr.db.Exec(query, ID)
 	if err != nil {

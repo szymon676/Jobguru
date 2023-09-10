@@ -1,16 +1,11 @@
-package app
+package migrate
 
 import (
 	"database/sql"
 	"log"
-	"os"
 )
 
-var sqldb *sql.DB
-
-func init() {
-	dsn := os.Getenv("DSN")
-
+func MigratePostgresDB(dsn string) *sql.DB {
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		log.Fatal(err)
@@ -43,6 +38,5 @@ func init() {
 		location TEXT
 		);
 	`)
-
-	sqldb = db
+	return db
 }
