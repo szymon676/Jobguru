@@ -12,5 +12,6 @@ func main() {
 		port = ":3000"
 	}
 	dsn := os.Getenv("DSN")
+
 	app.SetupApp(port, dsn)
 }

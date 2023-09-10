@@ -8,7 +8,7 @@ import (
 func MigratePostgresDB(dsn string) *sql.DB {
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("couldn't open db.", err)
 	}
 
 	if err := db.Ping(); err != nil {
