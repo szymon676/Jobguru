@@ -6,17 +6,17 @@ import (
 
 type (
 	Job interface {
-		CreateJob(entity.JobReq) error
+		CreateJob(*entity.JobReq) error
 		GetJobs() ([]entity.Job, error)
 		GetJobsByUser(userid int) ([]entity.Job, error)
-		UpdateJobByID(int, entity.JobReq) error
+		UpdateJobByID(int, *entity.JobReq) error
 		DeleteJobByID(ID int) error
 	}
 	JobRepo interface {
-		CreateJob(entity.JobReq) error
+		CreateJob(*entity.Job) error
 		GetJobs() ([]entity.Job, error)
 		GetJobsByUserID(userid int) ([]entity.Job, error)
-		UpdateJobByID(int, entity.JobReq) error
+		UpdateJobByID(int, *entity.Job) error
 		DeleteJobByID(int) error
 	}
 	User interface {

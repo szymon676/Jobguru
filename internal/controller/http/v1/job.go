@@ -24,7 +24,7 @@ func newJobRoutes(router *fiber.App, jobusecase usecase.Job) {
 }
 
 func (jh *jobRoutes) createJob(c *fiber.Ctx) error {
-	var req entity.JobReq
+	var req *entity.JobReq
 
 	c.BodyParser(&req)
 
@@ -57,7 +57,7 @@ func (jh *jobRoutes) getJobsByUser(c *fiber.Ctx) error {
 }
 
 func (jh *jobRoutes) updateJob(c *fiber.Ctx) error {
-	var req entity.JobReq
+	var req *entity.JobReq
 	userid := c.Params("id")
 	id, _ := strconv.Atoi(userid)
 

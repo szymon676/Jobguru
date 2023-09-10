@@ -14,13 +14,13 @@ func NewJobUsecase(repo JobRepo) *JobUsecase {
 	}
 }
 
-func (js *JobUsecase) CreateJob(req entity.JobReq) error {
-	err := entity.VerifyJobReq(req)
+func (js *JobUsecase) CreateJob(req *entity.JobReq) error {
+	job, err := entity.VerifyJobReq(req)
 	if err != nil {
 		return err
 	}
 
-	err = js.repo.CreateJob(req)
+	err = js.repo.CreateJob(job)
 	if err != nil {
 		return err
 	}
@@ -44,12 +44,12 @@ func (js *JobUsecase) GetJobsByUser(userid int) ([]entity.Job, error) {
 	return jobs, nil
 }
 
-func (js *JobUsecase) UpdateJobByID(userID int, req entity.JobReq) error {
-	err := entity.VerifyJobReq(req)
+func (js *JobUsecase) UpdateJobByID(id int, req *entity.JobReq) error {
+	job, err := entity.VerifyJobReq(req)
 	if err != nil {
 		return err
 	}
-	err = js.repo.UpdateJobByID(userID, req)
+	err = js.repo.UpdateJobByID(id, job)
 	if err != nil {
 		return err
 	}
