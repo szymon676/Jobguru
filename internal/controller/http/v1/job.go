@@ -8,35 +8,34 @@ import (
 	"github.com/szymon676/jobguru/internal/usecase"
 )
 
-type jobRoutes struct {
-	j usecase.Job
+type JobRoutes struct {
+	UseCase usecase.Job
 }
 
-func newJobRoutes(router *fiber.App, jobusecase usecase.Job) {
-	r := jobRoutes{j: jobusecase}
+func newJobRoutes(router *fiber.App, jobUseCase usecase.Job) {
+	jobRoutes := JobRoutes{UseCase: jobUseCase}
 
-	jr := router.Group("/jobs")
-	jr.Post("/", r.createJob)
-	jr.Get("/", r.getAllJobs)
-	jr.Get("/{userid}", r.getJobsByUser)
-	jr.Put("/:id", r.updateJob)
-	jr.Delete("/:id", r.deleteJob)
+	jobGroup := router.Group("/jobs")
+	jobGroup.Post("/", jobRoutes.CreateJob)
+	jobGroup.Get("/", jobRoutes.GetAllJobs)
+	jobGroup.Get("/:userid", jobRoutes.GetJobsByUser)
+	jobGroup.Put("/:id", jobRoutes.UpdateJob)
+	jobGroup.Delete("/:id", jobRoutes.DeleteJob)
 }
 
-func (jh *jobRoutes) createJob(c *fiber.Ctx) error {
+func (jr *JobRoutes) CreateJob(c *fiber.Ctx) error {
 	var req *entity.JobReq
-
 	c.BodyParser(&req)
 
-	if err := jh.j.CreateJob(req); err != nil {
+	if err := jr.UseCase.CreateJob(req); err != nil {
 		return err
 	}
 
-	return c.JSON("job created successfully")
+	return c.JSON("Job created successfully")
 }
 
-func (jh *jobRoutes) getAllJobs(c *fiber.Ctx) error {
-	jobs, err := jh.j.GetJobs()
+func (jr *JobRoutes) GetAllJobs(c *fiber.Ctx) error {
+	jobs, err := jr.UseCase.GetJobs()
 	if err != nil {
 		return err
 	}
@@ -44,11 +43,11 @@ func (jh *jobRoutes) getAllJobs(c *fiber.Ctx) error {
 	return c.JSON(jobs)
 }
 
-func (jh *jobRoutes) getJobsByUser(c *fiber.Ctx) error {
-	userid := c.Params("id")
-	id, _ := strconv.Atoi(userid)
+func (jr *JobRoutes) GetJobsByUser(c *fiber.Ctx) error {
+	userID := c.Params("userid")
+	id, _ := strconv.Atoi(userID)
 
-	jobs, err := jh.j.GetJobsByUser(id)
+	jobs, err := jr.UseCase.GetJobsByUser(id)
 	if err != nil {
 		return err
 	}
@@ -56,28 +55,27 @@ func (jh *jobRoutes) getJobsByUser(c *fiber.Ctx) error {
 	return c.JSON(jobs)
 }
 
-func (jh *jobRoutes) updateJob(c *fiber.Ctx) error {
+func (jr *JobRoutes) UpdateJob(c *fiber.Ctx) error {
 	var req *entity.JobReq
-	userid := c.Params("id")
-	id, _ := strconv.Atoi(userid)
+	jobID := c.Params("id")
+	id, _ := strconv.Atoi(jobID)
 
 	c.BodyParser(&req)
 
-	err := jh.j.UpdateJob(id, req)
-	if err != nil {
+	if err := jr.UseCase.UpdateJob(id, req); err != nil {
 		return err
 	}
 
-	return c.JSON("job updated successfully")
+	return c.JSON("Job updated successfully")
 }
 
-func (jh *jobRoutes) deleteJob(c *fiber.Ctx) error {
-	userid := c.Params("id")
-	id, _ := strconv.Atoi(userid)
+func (jr *JobRoutes) DeleteJob(c *fiber.Ctx) error {
+	jobID := c.Params("id")
+	id, _ := strconv.Atoi(jobID)
 
-	if err := jh.j.DeleteJob(id); err != nil {
+	if err := jr.UseCase.DeleteJob(id); err != nil {
 		return err
 	}
 
-	return c.JSON("job deleted successfully")
+	return c.JSON("Job deleted successfully")
 }

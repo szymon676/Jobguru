@@ -1,61 +1,84 @@
 package v1
 
 import (
-	"strconv"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	"github.com/szymon676/jobguru/internal/entity"
 	"github.com/szymon676/jobguru/internal/usecase"
 )
 
-type userRoutes struct {
-	usecase usecase.User
+type UserRoutes struct {
+	UseCase usecase.User
+	Secret  []byte
 }
 
-func newUserRoutes(router *fiber.App, usecase usecase.User) {
-	r := userRoutes{usecase: usecase}
+func newUserRoutes(router *fiber.App, useCase usecase.User, secretKey string) {
+	userRoutes := UserRoutes{
+		UseCase: useCase,
+		Secret:  []byte(secretKey),
+	}
 
-	ur := router.Group("/auth")
-	ur.Post("/register", (r.registerUser))
-	ur.Post("/login", (r.loginUser))
-	ur.Get("/users/{id}", (r.getUserByID))
+	authGroup := router.Group("/auth")
+	authGroup.Post("/register", userRoutes.RegisterUser)
+	authGroup.Post("/login", userRoutes.LoginUser)
+	authGroup.Post("/logout", userRoutes.LogoutUser)
 }
 
-func (uh *userRoutes) registerUser(c *fiber.Ctx) error {
+func (ur *UserRoutes) generateToken(userID int) (string, error) {
+	claims := jwt.MapClaims{
+		"user_id": userID,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(),
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(ur.Secret)
+}
+
+func (ur *UserRoutes) RegisterUser(c *fiber.Ctx) error {
 	var req entity.RegisterUser
-
 	c.BodyParser(&req)
 
-	if err := uh.usecase.CreateUser(req); err != nil {
+	if err := ur.UseCase.CreateUser(req); err != nil {
 		return err
 	}
 
 	return c.JSON("User registration done successfully")
 }
 
-func (uh *userRoutes) loginUser(c *fiber.Ctx) error {
+func (ur *UserRoutes) LoginUser(c *fiber.Ctx) error {
 	var req entity.LoginUser
-
 	c.BodyParser(&req)
 
-	token, err := uh.usecase.LoginUser(req)
+	userID, err := ur.UseCase.LoginUser(req)
 	if err != nil {
 		return err
 	}
 
-	_ = token
+	token, err := ur.generateToken(userID)
+	if err != nil {
+		return err
+	}
 
-	return c.JSON("user logged in successfully")
+	cookie := fiber.Cookie{
+		Name:    "jwt_token",
+		Value:   token,
+		Expires: time.Now().Add(time.Hour * 24),
+	}
+
+	c.Cookie(&cookie)
+
+	return c.JSON(fiber.Map{"message": "user logged in successfully"})
 }
 
-func (uh *userRoutes) getUserByID(c *fiber.Ctx) error {
-	userid := c.Params("id")
-	id, _ := strconv.Atoi(userid)
-
-	user, err := uh.usecase.GetUserByID(id)
-	if err != nil {
-		return err
+func (ur *UserRoutes) LogoutUser(c *fiber.Ctx) error {
+	cookie := fiber.Cookie{
+		Name:    "jwt_token",
+		Value:   "",
+		Expires: time.Now().Add(-time.Hour),
 	}
 
-	return c.JSON(user)
+	c.Cookie(&cookie)
+
+	return c.JSON(fiber.Map{"message": "user logged out successfully"})
 }

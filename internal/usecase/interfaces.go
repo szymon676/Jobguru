@@ -21,12 +21,10 @@ type (
 	}
 	User interface {
 		CreateUser(entity.RegisterUser) error
-		LoginUser(entity.LoginUser) (string, error)
-		GetUserByID(id int) (*entity.User, error)
+		LoginUser(entity.LoginUser) (int, error)
 	}
 	UserRepo interface {
 		CreateUser(entity.RegisterUser) error
-		GetUserByID(id int) (*entity.User, error)
-		GetUserByEmail(email string) (*entity.User, error)
+		GetUserByCriterion(criterion, value string) (*entity.User, error)
 	}
 )

@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/szymon676/jobguru/internal/entity"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -24,6 +23,12 @@ func (us *UserUsecase) CreateUser(req entity.RegisterUser) error {
 		return err
 	}
 	log.Println(req.Email, req.Password, req.Name)
+
+	existingUser, err := us.repo.GetUserByCriterion("email", req.Email)
+	if err == nil && existingUser != nil {
+		return errors.New("user with this email already exists")
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
@@ -38,24 +43,16 @@ func (us *UserUsecase) CreateUser(req entity.RegisterUser) error {
 	return nil
 }
 
-func (us *UserUsecase) LoginUser(req entity.LoginUser) (string, error) {
-	account, err := us.repo.GetUserByEmail(req.Email)
+func (us *UserUsecase) LoginUser(req entity.LoginUser) (int, error) {
+	user, err := us.repo.GetUserByCriterion("email", req.Email)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(req.Password))
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 	if err != nil {
-		return "", errors.New("wrong password!")
+		return 0, errors.New("wrong password!")
 	}
 
-	return "123", nil
-}
-
-func (us *UserUsecase) GetUserByID(id int) (*entity.User, error) {
-	user, err := us.repo.GetUserByID(id)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
+	return user.ID, nil
 }

@@ -8,6 +8,7 @@ require (
 )
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gofiber/fiber/v2 v2.49.1
 	github.com/szymon676/betterdocker v0.0.0-20230804062646-4ef07ba00afd
 )

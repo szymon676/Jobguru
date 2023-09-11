@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-// Job represents a job entity.
 type Job struct {
 	ID          int       `json:"id"`
 	UserID      int       `json:"user_id"`
@@ -19,7 +18,6 @@ type Job struct {
 	Location    string    `json:"location"`
 }
 
-// JobReq represents a job request.
 type JobReq struct {
 	UserID      int      `json:"user_id"`
 	Title       string   `json:"title"`
@@ -31,36 +29,87 @@ type JobReq struct {
 	Location    string   `json:"location"`
 }
 
-// VerifyJobReq validates a job request and returns a Job or an error.
 func VerifyJobReq(req *JobReq) (*Job, error) {
-	if req.UserID <= 0 {
-		return nil, errors.New("userID must be greater than 0")
-	}
-	if len(req.Skills) < 1 {
-		return nil, errors.New("at least one skill is required")
-	}
-	if len(req.Company) < 3 {
-		return nil, errors.New("company name must be at least 3 characters")
-	}
-	if len(req.Title) < 3 {
-		return nil, errors.New("job title must be at least 3 characters")
-	}
-	if len(req.Description) < 10 {
-		return nil, errors.New("job description must be at least 10 characters")
-	}
-	if req.Salary < 10 {
-		return nil, errors.New("salary must be at least 10")
-	}
-	if req.Currency == "" {
-		return nil, errors.New("currency must be specified")
-	}
-	if len(req.Location) < 5 {
-		return nil, errors.New("location must be specified")
+	validationErrors := []error{
+		validateUserID(req.UserID),
+		validateSkills(req.Skills),
+		validateCompanyName(req.Company),
+		validateJobTitle(req.Title),
+		validateJobDescription(req.Description),
+		validateSalary(req.Salary),
+		validateCurrency(req.Currency),
+		validateLocation(req.Location),
 	}
 
+	for _, err := range validationErrors {
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return createJobFromRequest(req), nil
+}
+
+func validateUserID(userID int) error {
+	if userID <= 0 {
+		return errors.New("userID must be greater than 0")
+	}
+	return nil
+}
+
+func validateSkills(skills []string) error {
+	if len(skills) < 1 {
+		return errors.New("at least one skill is required")
+	}
+	return nil
+}
+
+func validateCompanyName(companyName string) error {
+	if len(companyName) < 3 {
+		return errors.New("company name must be at least 3 characters")
+	}
+	return nil
+}
+
+func validateJobTitle(jobTitle string) error {
+	if len(jobTitle) < 3 {
+		return errors.New("job title must be at least 3 characters")
+	}
+	return nil
+}
+
+func validateJobDescription(jobDescription string) error {
+	if len(jobDescription) < 10 {
+		return errors.New("job description must be at least 10 characters")
+	}
+	return nil
+}
+
+func validateSalary(salary int) error {
+	if salary == 0 {
+		return errors.New("salary must be specified")
+	}
+	return nil
+}
+
+func validateCurrency(currency string) error {
+	if currency == "" {
+		return errors.New("currency must be specified")
+	}
+	return nil
+}
+
+func validateLocation(location string) error {
+	if len(location) < 1 {
+		return errors.New("location must be specified")
+	}
+	return nil
+}
+
+func createJobFromRequest(req *JobReq) *Job {
 	date := time.Now()
 
-	job := &Job{
+	return &Job{
 		UserID:      req.UserID,
 		Skills:      req.Skills,
 		Company:     req.Company,
@@ -71,6 +120,4 @@ func VerifyJobReq(req *JobReq) (*Job, error) {
 		Date:        date,
 		Location:    req.Location,
 	}
-
-	return job, nil
 }

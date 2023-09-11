@@ -12,6 +12,6 @@ func SetupRoutes(j usecase.Job, u usecase.User) *fiber.App {
 	app.Use(cors.New())
 
 	newJobRoutes(app, j)
-	newUserRoutes(app, u)
+	newUserRoutes(app, u, "1234")
 	return app
 }

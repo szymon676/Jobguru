@@ -23,9 +23,9 @@ func (jr *JobRepo) CreateJob(job *entity.Job) error {
 		INSERT INTO jobs (user_id, title, company, skills, salary, description, currency, date, location)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
-	convskills := pq.Array(job.Skills)
+	convSkills := pq.Array(job.Skills)
 
-	_, err := jr.db.Exec(query, job.UserID, job.Title, job.Company, convskills, job.Salary, job.Description, job.Currency, job.Date, job.Location)
+	_, err := jr.db.Exec(query, job.UserID, job.Title, job.Company, convSkills, job.Salary, job.Description, job.Currency, job.Date, job.Location)
 	if err != nil {
 		return fmt.Errorf("insert into jobs failed: %v", err)
 	}
@@ -73,13 +73,13 @@ func (jr *JobRepo) UpdateJob(ID int, job *entity.Job) error {
 		return fmt.Errorf("job with ID %v does not exist", ID)
 	}
 
-	convskills := pq.Array(job.Skills)
+	convSkills := pq.Array(job.Skills)
 
 	query := `
 		UPDATE jobs SET user_id = $1, title = $2, company = $3, skills = $4, salary = $5, 
 		description = $6, currency = $7, date = $8, location = $9 WHERE id = $10
 	`
-	_, err := jr.db.Exec(query, job.UserID, job.Title, job.Company, convskills, job.Salary, job.Description, job.Currency, job.Date, job.Location, ID)
+	_, err := jr.db.Exec(query, job.UserID, job.Title, job.Company, convSkills, job.Salary, job.Description, job.Currency, job.Date, job.Location, ID)
 	if err != nil {
 		return err
 	}

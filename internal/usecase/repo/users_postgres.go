@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "github.com/lib/pq"
 	"github.com/szymon676/jobguru/internal/entity"
 )
 
@@ -20,49 +19,27 @@ func NewUserRepo(db *sql.DB) *UserRepo {
 
 func (us UserRepo) CreateUser(req entity.RegisterUser) error {
 	query := "INSERT INTO users (username, password, email) VALUES($1, $2, $3)"
-
 	_, err := us.db.Exec(query, req.Name, req.Password, req.Email)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
-func (us UserRepo) GetUserByID(id int) (*entity.User, error) {
-	rows, err := us.db.Query("select * from users where id = $1", id)
+func (us UserRepo) GetUserByCriterion(criterion, value string) (*entity.User, error) {
+	query := fmt.Sprintf("SELECT * FROM users WHERE %s = $1", criterion)
+	rows, err := us.db.Query(query, value)
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		return scanUser(rows)
 	}
 
-	return nil, fmt.Errorf("user %d not found", id)
-}
-
-func (us UserRepo) GetUserByEmail(email string) (*entity.User, error) {
-	rows, err := us.db.Query("select * from users where email = $1", email)
-	if err != nil {
-		return nil, err
-	}
-
-	for rows.Next() {
-		return scanUser(rows)
-	}
-
-	return nil, fmt.Errorf("user %s not found", email)
+	return nil, fmt.Errorf("user with %s '%s' not found", criterion, value)
 }
 
 func scanUser(rows *sql.Rows) (*entity.User, error) {
-	account := new(entity.User)
-	err := rows.Scan(
-		&account.ID,
-		&account.Name,
-		&account.Password,
-		&account.Email,
-	)
-
-	return account, err
+	user := new(entity.User)
+	err := rows.Scan(&user.ID, &user.Name, &user.Password, &user.Email)
+	return user, err
 }
