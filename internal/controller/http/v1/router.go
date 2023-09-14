@@ -9,9 +9,13 @@ import (
 
 func SetupRoutes(j usecase.Job, u usecase.User) *fiber.App {
 	app := fiber.New()
-	app.Use(cors.New(
-		cors.Config{AllowCredentials: true},
-	))
+	app.Use(cors.New(cors.Config{
+		AllowCredentials: true,
+		AllowOriginsFunc: func(origin string) bool {
+			return true
+		},
+	}))
+	
 
 	newJobRoutes(app, j)
 	newUserRoutes(app, u, "1234")
